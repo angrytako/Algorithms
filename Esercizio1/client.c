@@ -8,7 +8,9 @@ int compare(void *num1, void* num2);
 void print_strings(char*string, int num_strings);
 void* copy_plus_one(void* array, void* elem, int sizeElem, int nrElem);
 void print_array(int* array, int numElem);
-int compareRecordsByField2(void *record1, void *record2);
+int compare_records_by_field1(void *record1, void *record2);
+int compare_records_by_field2(void *record1, void *record2);
+int compare_records_by_field3(void *record1, void *record2);
 int main (void){
     FILE* st, *after;
     Record* records;
@@ -16,7 +18,7 @@ int main (void){
         printf("Errore apertura file!\n");
     after=fopen("results.csv","w");
     records=parse_csv(st);
-    sort(records,compareRecordsByField2,sizeof(*records),NR_RECORDS);
+    sort(records,compare_records_by_field3,sizeof(*records),NR_RECORDS);
     print_all_records(after,records);
 
 }
@@ -31,7 +33,10 @@ int compare(void *num1, void *num2){
     else    
         return 0;
     }
-int compareRecordsByField2(void *record1, void *record2){
+int compare_records_by_field1(void *record1, void *record2){
+    return strncmp(((Record*)record1)->field1,((Record*)record2)->field1, RECORD_STR_SIZE);
+}
+int compare_records_by_field2(void *record1, void *record2){
     if(((Record*)record1)->field2>((Record*)record2)->field2)
         return 1;
     else if(((Record*)record1)->field2<((Record*)record2)->field2)
@@ -39,6 +44,16 @@ int compareRecordsByField2(void *record1, void *record2){
     else    
         return 0;
     }
+
+int compare_records_by_field3(void *record1, void *record2){
+    if(((Record*)record1)->field3>((Record*)record2)->field3)
+        return 1;
+    else if(((Record*)record1)->field3<((Record*)record2)->field3)
+        return -1;
+    else    
+        return 0;
+    }
+
 void print_array(int* array, int numElem){
     int i;
     if(array==NULL || numElem<=0){

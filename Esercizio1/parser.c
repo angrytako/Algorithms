@@ -5,26 +5,26 @@ void get_field(FILE *st, char* buffer, char stop);
 void print_all_records(FILE* st, Record* records);
 Record* parse_csv(FILE* st){
     int i;    
-    char buffer[50];
+    char buffer[RECORD_STR_SIZE];
     Record* records;
     records=malloc(NR_RECORDS*sizeof(*records));
     for(i=0;i<NR_RECORDS;i++)
     {
         get_field(st,buffer,',');
         records[i].id=atoi(buffer);
-        memset(buffer, 0,50);
+        memset(buffer, 0,RECORD_STR_SIZE);
 
         get_field(st,buffer,',');
-        strncpy(records[i].field1,buffer,50);
-        memset(buffer, 0,50);
+        strncpy(records[i].field1,buffer,RECORD_STR_SIZE);
+        memset(buffer, 0,RECORD_STR_SIZE);
 
         get_field(st,buffer,',');
         records[i].field2=atoi(buffer);
-        memset(buffer, 0,50);
+        memset(buffer, 0,RECORD_STR_SIZE);
 
         get_field(st,buffer,'\n');
         records[i].field3=atof(buffer);
-        memset(buffer, 0,50);
+        memset(buffer, 0,RECORD_STR_SIZE);
     }
     return records;
 
