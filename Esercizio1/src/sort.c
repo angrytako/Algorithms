@@ -1,5 +1,6 @@
 #include "sort.h"
 #define K 200
+void sort_k(void* array, int (*compare)(void*,void*), int dimElem, int nrElem, int k);
 void sort(void* array,int (*compare)(void*,void*), int dimElem, int nrElem);
 void merge_sort_k(void* array,int (*compare)(void*,void*), int dimElem, int i, int j, int k);
 void merge(void* array,int (*compare)(void*,void*), int dimElem,int i, int j, int h, int k);
@@ -111,3 +112,8 @@ void sort(void* array,int (*compare)(void*,void*), int dimElem, int nrElem){
     merge_sort_k(array,compare,dimElem,0,nrElem-1,K);
 }
 
+void sort_k(void* array, int (*compare)(void*,void*), int dimElem, int nrElem, int k){
+    if(array==NULL || compare==NULL || dimElem<=0 || nrElem<=0 || k<1)
+        return;
+    merge_sort_k(array,compare,dimElem,0,nrElem-1,k);
+}

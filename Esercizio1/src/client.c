@@ -1,6 +1,14 @@
+//da aggiungere gli ifndef nei .h
+//magari esporre struct generica nel .h
+//dividere il codice in cartelle
+//mettere il makefile apposto una volta fatto tutto ciò
+//mettere gli include messi nei .h nei .c
+//controllare che i return dei malloc non siano NULL
+//aggiungere argv, argc
 #include<stdio.h>
 #include"sort.h"
 #include "parser.h"
+#include <time.h>
 #define SIZE(array) sizeof(array)/sizeof(*array)
 #define MAX_STRING 50
 int string_cmp(void *str1, void *str2);
@@ -13,13 +21,35 @@ int compare_records_by_field2(void *record1, void *record2);
 int compare_records_by_field3(void *record1, void *record2);
 int main (void){
     FILE* st, *after;
-    Record* records;
-    if((st=fopen("records.csv","r"))==NULL)
-        printf("Errore apertura file!\n");
-    after=fopen("results.csv","w");
+    Record* records, *testRecords;
+    time_t beforeTime, afterTime;
+    int k=1;
+    if((st=fopen("../records.csv","r"))==NULL){
+        fprintf(stderr,"Errore apertura file!\n");
+        return -1;
+    }
+    if((after=fopen("results.csv","w"))==NULL){
+        fprintf(stderr,"Errore apertura file!\n");
+        return -1;
+    }
+
+
+    if((testRecords=malloc(NR_RECORDS*sizeof(*testRecords)))==NULL){
+        fprintf(stderr,"Errore malloc\n");
+        return -1;
+    }
     records=parse_csv(st);
-    sort(records,compare_records_by_field3,sizeof(*records),NR_RECORDS);
-    print_all_records(after,records);
+    while(1){
+        memcpy(testRecords,records,NR_RECORDS*sizeof(*testRecords));
+        beforeTime=time(NULL);
+        printf("Elaborazione con k %d iniziata!\n", k);
+        sort_k(testRecords,compare_records_by_field3,sizeof(*testRecords),NR_RECORDS,k);
+        afterTime=time(NULL) -beforeTime;
+        printf("Elaborazione con k %d finita in %I64u\n ", k,afterTime);
+        print_k_stats(after,k,afterTime);
+        k+=20;
+    }
+    //print_all_records(after,records);
 
 }
 int string_cmp(void *str1, void *str2){

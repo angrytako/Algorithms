@@ -3,7 +3,10 @@ Record* parse_csv(FILE* st);
 void print_record(FILE *st, Record passage);
 void get_field(FILE *st, char* buffer, char stop);
 void print_all_records(FILE* st, Record* records);
+void print_k_stats(FILE* st, int k, time_t time);
 Record* parse_csv(FILE* st){
+    if(st==NULL)
+        return NULL;
     int i;    
     char buffer[RECORD_STR_SIZE];
     Record* records;
@@ -23,7 +26,7 @@ Record* parse_csv(FILE* st){
         memset(buffer, 0,RECORD_STR_SIZE);
 
         get_field(st,buffer,'\n');
-        records[i].field3=atof(buffer);
+        records[i].field3=(float) atof(buffer);
         memset(buffer, 0,RECORD_STR_SIZE);
     }
     return records;
@@ -48,4 +51,13 @@ void print_all_records(FILE* st, Record* records){
         print_record(st,records[i]);
         fprintf(st,"\n");
     }
+}
+void print_k_stats(FILE* st, int k, time_t time){
+    static char isFirstTime=1;
+    if(isFirstTime){
+        fprintf(st,"K,Time\n");
+        isFirstTime=0;
+    }
+    fprintf(st,"%d,%I64u\n",k,time);
+    fflush(st);
 }
