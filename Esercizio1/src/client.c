@@ -8,6 +8,7 @@
 #include<stdio.h>
 #include"sort.h"
 #include "parser.h"
+#include "validation.h"
 #include <time.h>
 #define SIZE(array) sizeof(array)/sizeof(*array)
 #define MAX_STRING 50
@@ -25,11 +26,11 @@ int main (void){
     time_t beforeTime, afterTime;
     int k=1;
     if((st=fopen("../records.csv","r"))==NULL){
-        fprintf(stderr,"Errore apertura file!\n");
+        fprintf(stderr,"Errore apertura file dei records!\n");
         return -1;
     }
     if((after=fopen("results.csv","w"))==NULL){
-        fprintf(stderr,"Errore apertura file!\n");
+        fprintf(stderr,"Errore apertura file risultati!\n");
         return -1;
     }
 
@@ -43,11 +44,18 @@ int main (void){
         memcpy(testRecords,records,NR_RECORDS*sizeof(*testRecords));
         beforeTime=time(NULL);
         printf("Elaborazione con k %d iniziata!\n", k);
-        sort_k(testRecords,compare_records_by_field3,sizeof(*testRecords),NR_RECORDS,k);
+        sort_k(testRecords,compare_records_by_field2,sizeof(*testRecords),NR_RECORDS,k);
         afterTime=time(NULL) -beforeTime;
+        if(validate(testRecords,compare_records_by_field2,sizeof(*testRecords),NR_RECORDS))
+            printf("Sort valido!!\n");
+        else {
+             printf("Sort non valido!!\n");
+             print_all_records(after,testRecords);
+             return -1;
+        }
         printf("Elaborazione con k %d finita in %I64u\n ", k,afterTime);
         print_k_stats(after,k,afterTime);
-        k+=20;
+        k*=2;
     }
     //print_all_records(after,records);
 
@@ -78,7 +86,7 @@ int compare_records_by_field2(void *record1, void *record2){
 int compare_records_by_field3(void *record1, void *record2){
     if(((Record*)record1)->field3>((Record*)record2)->field3)
         return 1;
-    else if(((Record*)record1)->field3<((Record*)record2)->field3)
+    else if(((Record*)record1)->field3 < ((Record*)record2)->field3)
         return -1;
     else    
         return 0;

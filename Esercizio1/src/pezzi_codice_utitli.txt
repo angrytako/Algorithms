@@ -112,4 +112,18 @@ void print_strings(char*string, int num_strings ){
   bin_insert_sort(arr4,compare,sizeof(*arr4),5);
     bin_insert_sort(arr4+5,compare,sizeof(*arr4),5);
     merge_sort_k(arr4,compare,sizeof(*arr4),0,9,1);
-    print_array(arr4,10);*/
+    print_array(arr4,10);
+    
+    
+    
+    //in sostituzione al binary search
+    index=i;
+       for(int j=0;j<i;j++){
+            if(compare(SUM_VOID(array,(j*dimElem)),SUM_VOID(array,(i*dimElem)))==1) //a[j]>a[i]
+                {
+                    index=j;
+                    j=i;
+                }
+       }
+    
+    */

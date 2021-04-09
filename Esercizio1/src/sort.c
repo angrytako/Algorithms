@@ -12,51 +12,56 @@ int bin_search_rec(void* array, void* elem, int (*compare)(void*,void*),
                    int dimElem, int i,int j);       
 
 
-int bin_search(void* array, void* elem, int (*compare)(void*,void*), int dimElem, int nrElem){
-    if(array==NULL || elem==NULL || compare==NULL || dimElem<=0 || nrElem<=0)
-        return -1;
-    return bin_search_rec(array, elem,compare,dimElem,0,nrElem-1);}
-
 int bin_search_rec(void* array, void* elem, int (*compare)(void*,void*),
                    int dimElem, int i,int j){
     if(i>j)
         return i;
     int k= (i+j)/2;
-    if((*compare)(SUM_VOID(array,k*dimElem),elem)==-1){ //elem maggiore dell'elemento a metà
-        bin_search_rec(array, elem, compare, dimElem, k+1,j); 
+    if((*compare)(SUM_VOID(array,k*dimElem),elem)==-1){ //elem maggiore dell'elemento a metà (a[k]<elem)
+        return bin_search_rec(array, elem, compare, dimElem, k+1,j); 
     }
-    else if((*compare)(SUM_VOID(array,k*dimElem),elem)==+1){ //elem minore dell'elemento a metà 
-         bin_search_rec(array, elem, compare, dimElem, i,k-1); 
+    else if((*compare)(SUM_VOID(array,k*dimElem),elem)==+1){ //elem minore dell'elemento a metà (a[k]>elem)
+        return bin_search_rec(array, elem, compare, dimElem, i,k-1); 
     }
-    else  return k;
+    else  return k; // a[k]==elem
  }
+
+
+int bin_search(void* array, void* elem, int (*compare)(void*,void*), int dimElem, int nrElem){
+    if(array==NULL || elem==NULL || compare==NULL || dimElem<=0 || nrElem<=0)
+        return -1;
+    return bin_search_rec(array, elem,compare,dimElem,0,nrElem-1);}
+
+
+  //andrà inserita la dim totale dopo la selezione
+ //si assume che elem stia nell'ultima casella dell'array passata
+ void insert_last_elem(void* array, int dimElem, int nrElem,int index){
+    if(array==NULL || dimElem<=0 || nrElem<=0 || index<0)
+        return;
+    void *sup, *lastElem=SUM_VOID(array,(nrElem-1)*dimElem);//lastElem=a[nrElem-1]
+    int i;
+    sup =malloc(dimElem);
+    memcpy(sup, SUM_VOID(array,index*dimElem),dimElem); // sup=a[index]
+    memcpy(SUM_VOID(array,index*dimElem),lastElem,dimElem); // a[index]=lastElem
+    for(i=index+1;i<nrElem;i++){                            //i=index+1
+        memcpy(lastElem,SUM_VOID(array,i*dimElem),dimElem); // lastElem=a[i]
+        memcpy(SUM_VOID(array,i*dimElem),sup,dimElem);  // a[i]=sup;
+        memcpy(sup,lastElem,dimElem);                   //sup=lastElem
+    }
+    free(sup);
+    return;
+ }
+
 void bin_insert_sort(void* array, int (*compare)(void*,void*), int dimElem, int nrElem){
     if(array==NULL || compare==NULL || dimElem<=0 || nrElem<=1)
         return;
     int i, index;
     for(i=1;i<nrElem;i++){
-        index=bin_search(array, SUM_VOID(array,(i*dimElem)),compare,dimElem,i+1);
+        index=bin_search(array, SUM_VOID(array,(i*dimElem)),compare,dimElem,i);
         insert_last_elem(array,dimElem,i+1,index);
     }
  }
- //andrà inserita la dim totale dopo la selezione
- //si assume che elem stia nell'ultima casella dell'array passata
- void insert_last_elem(void* array, int dimElem, int nrElem,int index){
-    if(array==NULL || dimElem<=0 || nrElem<=0 || index<0)
-        return;
-    void *sup, *lastElem=SUM_VOID(array,(nrElem-1)*dimElem);
-    int i;
-    sup =malloc(dimElem);
-    memcpy(sup, SUM_VOID(array,index*dimElem),dimElem);
-    memcpy(SUM_VOID(array,index*dimElem),lastElem,dimElem);
-    for(i=index+1;i<nrElem;i++){
-        memcpy(lastElem,SUM_VOID(array,i*dimElem),dimElem);
-        memcpy(SUM_VOID(array,i*dimElem),sup,dimElem); 
-        memcpy(sup,lastElem,dimElem);
-    }
-    free(sup);
-    return;
- }
+
  //si assume che i<k e che i-j e h-k contengano tutti gli elem tra i-k, senza sovrapposizione
  void merge(void* array,int (*compare)(void*,void*), int dimElem, int i, int j, int h, int k){
     if(array==NULL || compare==NULL || dimElem<=0 || i>j || h>k || i>k)
