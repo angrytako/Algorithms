@@ -4,7 +4,6 @@ void sort_k(void* array, int (*compare)(void*,void*), int dimElem, int nrElem, i
 void sort(void* array,int (*compare)(void*,void*), int dimElem, int nrElem);
 void merge_sort_k(void* array,int (*compare)(void*,void*), int dimElem, int i, int j, int k);
 void merge(void* array,int (*compare)(void*,void*), int dimElem,int i, int j, int h, int k);
-void arr_copy(void* destination, void* source, int sizeElem, int nrElem);
 void bin_insert_sort(void* array,int (*compare)(void*,void*), int dimElem, int nrElem);
 void insert_last_elem(void* array, int dimElem, int nrElem,int index);
 int bin_search(void* array, void* elem, int (*compare)(void*,void*), int dimElem, int nrElem);
