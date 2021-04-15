@@ -55,7 +55,7 @@ int main (void){
         }
         printf("Elaborazione con k %d finita in %I64u\n ", k,afterTime);
         print_k_stats(after,k,afterTime);
-        k*=2;
+        k+=1;
     }
     //print_all_records(after,records);
 

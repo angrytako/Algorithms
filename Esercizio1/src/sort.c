@@ -3,7 +3,7 @@
 void sort_k(void* array, int (*compare)(void*,void*), int dimElem, int nrElem, int k);
 void sort(void* array,int (*compare)(void*,void*), int dimElem, int nrElem);
 void merge_sort_k(void* array,int (*compare)(void*,void*), int dimElem, int i, int j, int k);
-void merge(void* array,int (*compare)(void*,void*), int dimElem,int i, int j, int h, int k);
+void merge(void* array,int (*compare)(void*,void*), int dimElem,int i, int j, int k);
 void bin_insert_sort(void* array,int (*compare)(void*,void*), int dimElem, int nrElem);
 void insert_last_elem(void* array, int dimElem, int nrElem,int index);
 int bin_search(void* array, void* elem, int (*compare)(void*,void*), int dimElem, int nrElem);
@@ -62,7 +62,8 @@ void bin_insert_sort(void* array, int (*compare)(void*,void*), int dimElem, int 
  }
 
  //si assume che i<k e che i-j e h-k contengano tutti gli elem tra i-k, senza sovrapposizione
- void merge(void* array,int (*compare)(void*,void*), int dimElem, int i, int j, int h, int k){
+ void merge(void* array,int (*compare)(void*,void*), int dimElem, int i, int j, int k){
+    int h=j+1;
     if(array==NULL || compare==NULL || dimElem<=0 || i>j || h>k || i>k)
         return;
     int nrElem = j-i + k-h +2, iterSup;
@@ -106,7 +107,7 @@ void merge_sort_k(void* array,int (*compare)(void*,void*), int dimElem, int i, i
         int half=(j+i)/2;
         merge_sort_k(array,compare,dimElem,i,half,k);
         merge_sort_k(array,compare,dimElem,half+1,j,k);
-        merge(array,compare,dimElem,i,half,half+1,j);
+        merge(array,compare,dimElem,i,half,j);
     }
 }
 

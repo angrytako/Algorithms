@@ -8,9 +8,7 @@ void insert_last_elem(void* array, int dimElem, int nrElem,int index);
 
 void bin_insert_sort(void* array,int (*compare)(void*,void*), int dimElem, int nrElem);
 
-void merge(void* array,int (*compare)(void*,void*), int dimElem,int i, int j, int h, int k);
-
-void merge_sort_k(void* array,int (*compare)(void*,void*), int dimElem, int i, int j, int k);
+void merge(void* array,int (*compare)(void*,void*), int dimElem,int i, int j, int k);
 
 void sort_k(void* array, int (*compare)(void*,void*), int dimElem, int nrElem, int k);
 
