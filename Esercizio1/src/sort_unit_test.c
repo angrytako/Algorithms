@@ -107,7 +107,9 @@ void test_bin_search_ordered_array_from_offsetchar_absent(){
                     /*test insert last elem*/
 //si assume che elem stia nell'ultima casella dell'array passata
 void test_insert_last_elem_null(){ /*dovrebbe dare qualche tipo di errore, se tentasse di accedere all "array"*/
-    insert_last_elem(NULL,sizeof(int),0,0);
+    int *a=NULL;
+    insert_last_elem(a,sizeof(int),0,0);
+    TEST_ASSERT(a==NULL);
 }
 void test_insert_last_elem_zero_elems(){ /*dovrebbe dare qualche tipo di errore, se tentasse di accedere all "array"*/
     int a[]={2,6,21,532};
@@ -160,32 +162,41 @@ void test_insert_last_elem_ordered_array_from_offset(){
 
                  /*bin insertion sort*/
 
-void test_insert_bin_search_arr_null(){
-    bin_insert_sort(NULL,compare_char,0,0); /*dovrebbe dare qualche tipo di errore, se tentasse di accedere all "array"*/
+void test_insert_bin_sort_arr_null(){
+    int *a=NULL;
+    bin_insert_sort(a,compare_char,0,0); /*dovrebbe dare qualche tipo di errore, se tentasse di accedere all "array"*/
+    TEST_ASSERT(a==NULL);
 }
-void test_insert_bin_search_cmp_null(){
+void test_insert_bin_sort_cmp_null(){
     int *a=NULL;
     bin_insert_sort(a,NULL,0,0); /*dovrebbe dare qualche tipo di errore, se tentasse di accedere alla "funzione"*/
+    TEST_ASSERT(a==NULL);
 }
-void test_insert_bin_search_one_elem(){
+void test_insert_bin_sort_one_elem(){
     char a[]={'c'};
     char expected[]={'c'};
     bin_insert_sort(a,compare_char,sizeof(*a),SIZE(a));
     TEST_ASSERT_EQUAL_CHAR_ARRAY(expected,a, SIZE(a));
 }
-void test_insert_bin_search_reverse_order(){
+void test_insert_bin_sort_ordered(){
+    int a[]={-4,99,1027,2222,4321};
+    int expected[]={-4,99,1027,2222,4321};
+    bin_insert_sort(a,compare_int,sizeof(*a),SIZE(a));
+    TEST_ASSERT_EQUAL_INT_ARRAY(expected,a, SIZE(a));
+}
+void test_insert_bin_sort_reverse_order(){
     int a[]={33,21,8,-11,-4};
     int expected[]={-11,-4,8,21,33};
     bin_insert_sort(a,compare_int,sizeof(*a),SIZE(a));
     TEST_ASSERT_EQUAL_INT_ARRAY(expected,a, SIZE(a));
 }
-void test_insert_bin_search_repeat(){
+void test_insert_bin_sort_repeat(){
     int a[]={69,12,12,-6,2,24,2,91,2};
     int expected[]={-6,2,2,2,12,12,24,69,91};
     bin_insert_sort(a,compare_int,sizeof(*a),SIZE(a));
     TEST_ASSERT_EQUAL_INT_ARRAY(expected,a, SIZE(a));
 }
-void test_insert_bin_search_from_offset(){
+void test_insert_bin_sort_from_offset(){
     int a[]={22,65,12,-23,99,21,2,-23,44};
     int expected[]={22,65,12,-23,-23,2,21,44,99};
     bin_insert_sort(a+3,compare_int,sizeof(*a),SIZE(a));
@@ -194,12 +205,15 @@ void test_insert_bin_search_from_offset(){
                                     
                                      /*merge*/
 void test_merge_arr_null(){
-    merge(NULL,compare_int,0,0,0,0); /*dovrebbe dare qualche tipo di errore, se tentasse di accedere all "array"*/
+    int *a=NULL;
+    merge(a,compare_int,0,0,0,0); /*dovrebbe dare qualche tipo di errore, se tentasse di accedere all "array"*/
+    TEST_ASSERT(a==NULL);
 }
 
 void test_merge_cmp_null(){
     char *a=NULL;
     merge(a,NULL,0,0,0,0); /*dovrebbe dare qualche tipo di errore, se tentasse di accedere alla "funzione"*/
+    TEST_ASSERT(a==NULL);
 }
 void test_merge_bad_indexes(){
     int a[]={12,24,21,-2,5,22};
@@ -266,10 +280,7 @@ void test_merge_in_char(){
     merge(a,compare_char,sizeof(*a),0,2,SIZE(a)-1);
     TEST_ASSERT_EQUAL_CHAR_ARRAY(expected,a, SIZE(a));
 }
-/*
 
-
-*/
 int main(void)
 {
 UNITY_BEGIN();
@@ -302,12 +313,13 @@ RUN_TEST(test_insert_last_elem_ordered_char_array);
 RUN_TEST(test_insert_last_elem_ordered_array_from_offset);
 
 /*bin insert sort*/
-RUN_TEST(test_insert_bin_search_arr_null);
-RUN_TEST(test_insert_bin_search_cmp_null);
-RUN_TEST(test_insert_bin_search_one_elem);
-RUN_TEST(test_insert_bin_search_reverse_order);
-RUN_TEST(test_insert_bin_search_repeat);
-RUN_TEST(test_insert_bin_search_from_offset);
+RUN_TEST(test_insert_bin_sort_arr_null);
+RUN_TEST(test_insert_bin_sort_cmp_null);
+RUN_TEST(test_insert_bin_sort_one_elem);
+RUN_TEST(test_insert_bin_sort_ordered);
+RUN_TEST(test_insert_bin_sort_reverse_order);
+RUN_TEST(test_insert_bin_sort_repeat);
+RUN_TEST(test_insert_bin_sort_from_offset);
 
 /*merge*/
 

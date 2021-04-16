@@ -39,7 +39,10 @@ int bin_search(void* array, void* elem, int (*compare)(void*,void*), int dimElem
         return;
     void *sup, *lastElem=SUM_VOID(array,(nrElem-1)*dimElem);//lastElem=a[nrElem-1]
     int i;
-    sup =malloc(dimElem);
+    if((sup = malloc(dimElem))==NULL){
+        fprintf(stderr, "Malloc error\nUnable to create support element\n");
+        return;
+    }
     memcpy(sup, SUM_VOID(array,index*dimElem),dimElem); // sup=a[index]
     memcpy(SUM_VOID(array,index*dimElem),lastElem,dimElem); // a[index]=lastElem
     for(i=index+1;i<nrElem;i++){                            //i=index+1
@@ -69,7 +72,10 @@ void bin_insert_sort(void* array, int (*compare)(void*,void*), int dimElem, int 
     int nrElem = j-i + k-h +2, iterSup;
     int first = i;
     void *supArr;
-    supArr=malloc(nrElem*dimElem);
+    if((supArr=malloc(nrElem*dimElem))==NULL){
+        fprintf(stderr, "Malloc error in merge\nUnable to create support array\n");
+        return;
+    }
     for(iterSup=0;iterSup<nrElem;iterSup++)
     {
         if(i>j){ /*caso in cui il primo sotto array è stato esaurito

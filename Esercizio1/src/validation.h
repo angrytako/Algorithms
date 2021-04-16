@@ -1,4 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-#define SUM_VOID(array, nrBits) ((void*)(((char*)array)+(nrBits)))
+#include "sort.h"
+
+#ifndef SORT_VALIDATION
+#define SORT_VALIDATION
 char validate(void* array, int (*compare)(void*,void*), int dimElem, int nrElem);
+#endif

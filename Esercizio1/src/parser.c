@@ -4,6 +4,7 @@ void print_record(FILE *st, Record passage);
 void get_field(FILE *st, char* buffer, char stop);
 void print_all_records(FILE* st, Record* records);
 void print_k_stats(FILE* st, int k, time_t time);
+
 Record* parse_csv(FILE* st){
     if(st==NULL)
         return NULL;
@@ -32,6 +33,7 @@ Record* parse_csv(FILE* st){
     return records;
 
 }
+
 void get_field(FILE *st, char* buffer, char stop){
     int intChar, j=0;
     while ((intChar=getc(st))!=stop)
