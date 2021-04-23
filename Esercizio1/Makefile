@@ -1,11 +1,15 @@
 CFLAGS 		= -g -O1 -Wall -Wextra -Wpedantic -Wconversion
 COMMON_DEPS 	= src/*.h Makefile
 
-all: bin/client bin/sort_unit_test
+all: createdir bin/client bin/sort_unit_test
 
-client: bin/client
+client: createdir bin/client
 
-test: bin/sort_unit_test
+test: createdir bin/sort_unit_test
+
+createdir:	
+	mkdir bin -p
+	mkdir build -p
 
 build/%.o: src/%.c $(COMMON_DEPS)
 	gcc $(CFLAGS) -c $< -o $@

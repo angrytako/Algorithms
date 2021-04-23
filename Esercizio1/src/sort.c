@@ -1,5 +1,5 @@
 #include "sort.h"
-#define K 200
+#define K 1
 void sort_k(void* array, int (*compare)(void*,void*), int dimElem, int nrElem, int k);
 void sort(void* array,int (*compare)(void*,void*), int dimElem, int nrElem);
 void merge_sort_k(void* array,int (*compare)(void*,void*), int dimElem, int i, int j, int k);
@@ -39,16 +39,16 @@ int bin_search(void* array, void* elem, int (*compare)(void*,void*), int dimElem
         return;
     void *sup, *lastElem=SUM_VOID(array,(nrElem-1)*dimElem);//lastElem=a[nrElem-1]
     int i;
-    if((sup = malloc(dimElem))==NULL){
+    if((sup = malloc((size_t) dimElem))==NULL){
         fprintf(stderr, "Malloc error\nUnable to create support element\n");
         return;
     }
-    memcpy(sup, SUM_VOID(array,index*dimElem),dimElem); // sup=a[index]
-    memcpy(SUM_VOID(array,index*dimElem),lastElem,dimElem); // a[index]=lastElem
+    memcpy(sup, SUM_VOID(array,index*dimElem),(size_t)dimElem); // sup=a[index]
+    memcpy(SUM_VOID(array,index*dimElem),lastElem,(size_t)dimElem); // a[index]=lastElem
     for(i=index+1;i<nrElem;i++){                            //i=index+1
-        memcpy(lastElem,SUM_VOID(array,i*dimElem),dimElem); // lastElem=a[i]
-        memcpy(SUM_VOID(array,i*dimElem),sup,dimElem);  // a[i]=sup;
-        memcpy(sup,lastElem,dimElem);                   //sup=lastElem
+        memcpy(lastElem,SUM_VOID(array,i*dimElem),(size_t)dimElem); // lastElem=a[i]
+        memcpy(SUM_VOID(array,i*dimElem),sup,(size_t)dimElem);  // a[i]=sup;
+        memcpy(sup,lastElem,(size_t)dimElem);                   //sup=lastElem
     }
     free(sup);
     return;
@@ -72,7 +72,7 @@ void bin_insert_sort(void* array, int (*compare)(void*,void*), int dimElem, int 
     int nrElem = j-i + k-h +2, iterSup;
     int first = i;
     void *supArr;
-    if((supArr=malloc(nrElem*dimElem))==NULL){
+    if((supArr=malloc((size_t)(nrElem*dimElem)))==NULL){
         fprintf(stderr, "Malloc error in merge\nUnable to create support array\n");
         return;
     }
@@ -81,26 +81,26 @@ void bin_insert_sort(void* array, int (*compare)(void*,void*), int dimElem, int 
         if(i>j){ /*caso in cui il primo sotto array è stato esaurito
                    dato che i doveva essere almeno = a j per ipotesi, se sono qui 
                     allora c'è ancora rimasto l altro sottoarray, altrimenti iterSup sarebbe = nrElem*/
-            memcpy(SUM_VOID(supArr, iterSup*dimElem),SUM_VOID(array,h*dimElem),dimElem);
+            memcpy(SUM_VOID(supArr, iterSup*dimElem),SUM_VOID(array,h*dimElem),(size_t)dimElem);
             h++;
         }
         else if(h>k){ //stesso ragionamento fatto sopra
-            memcpy(SUM_VOID(supArr, iterSup*dimElem),SUM_VOID(array,i*dimElem),dimElem);
+            memcpy(SUM_VOID(supArr, iterSup*dimElem),SUM_VOID(array,i*dimElem),(size_t)dimElem);
             i++;
         }
         else{   //caso generico, in cui entrambi hanno ancora almeno un elemento
             if((*compare)(SUM_VOID(array,i*dimElem),SUM_VOID(array,h*dimElem))==-1) {//elem_i<elem_h
-                memcpy(SUM_VOID(supArr, iterSup*dimElem),SUM_VOID(array,i*dimElem),dimElem);
+                memcpy(SUM_VOID(supArr, iterSup*dimElem),SUM_VOID(array,i*dimElem),(size_t)dimElem);
                 i++;
             }
             else{//elem_h<=elem_i
-                memcpy(SUM_VOID(supArr, iterSup*dimElem),SUM_VOID(array,h*dimElem),dimElem);
+                memcpy(SUM_VOID(supArr, iterSup*dimElem),SUM_VOID(array,h*dimElem),(size_t)dimElem);
                 h++;
             }
         }
         
     }
-   memcpy(SUM_VOID(array,first*dimElem),supArr,dimElem*nrElem);
+   memcpy(SUM_VOID(array,first*dimElem),supArr,(size_t)(dimElem*nrElem));
    free(supArr);
    return;
  }
