@@ -2,3 +2,6 @@
 Esercizio1/
 Esercizio1/**
 Esercizio2/*.txt
+.vscode/settings.json
+Esercizio2/src/a.exe
+Esercizio2/src/result.txt

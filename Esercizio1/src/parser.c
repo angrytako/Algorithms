@@ -9,19 +9,19 @@ Record* parse_csv(FILE* st, int* nrElems){
     if(st==NULL)
         return NULL;
     int i=0;
-    int currLength=1;    
+    int maxNumElem=1024;    
     char buffer[RECORD_STR_SIZE];
     Record* records;
-    if((records=malloc((size_t)currLength*sizeof(*records)))==NULL){
+    if((records=malloc((size_t)maxNumElem*sizeof(*records)))==NULL){
         fprintf(stderr,"Error in allocating memory for the records array\n");
             }
     while(1)
     {
     
-        if(i>=currLength){
-          //  printf("realloc %lld\n",currLength);
-            currLength*=2;
-            if((records=realloc(records,(size_t)currLength*sizeof(*records)))==NULL){
+        if(i>=maxNumElem){
+          //  printf("realloc %lld\n",maxNumElem);
+            maxNumElem*=2;
+            if((records=realloc(records,(size_t)maxNumElem*sizeof(*records)))==NULL){
                 fprintf(stderr,"Error in allocating memory for the records array\n");
             }
         }
