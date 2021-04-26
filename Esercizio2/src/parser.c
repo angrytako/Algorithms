@@ -26,8 +26,17 @@ char** parse_dictionary(FILE* st, int* nrElems){
                 fprintf(stderr,"Error in allocating more memory for the dictionary\n");
             }
         }
-        if(get_word(st,buffer))
-            break;
+        if(get_word(st,buffer)){
+            if(strlen(buffer)==0)
+                 break;
+            else {
+                dictionary[i]=malloc(WORD_SIZE);
+                strncpy(dictionary[i],buffer,WORD_SIZE);
+                i++;
+                break;
+            }
+        }
+           
         dictionary[i]=malloc(WORD_SIZE);
         strncpy(dictionary[i],buffer,WORD_SIZE);
         memset(buffer, 0,WORD_SIZE);
