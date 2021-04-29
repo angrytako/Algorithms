@@ -37,15 +37,14 @@ int main (){
 
 /*
    
-    for(int i=0;i<10000;i++){
-            printf("%d\n",i);
+    for(int i=0;i<1000;i++){
+           // printf("%d\n",i);
             push_min(dictionary[i],dictionary[9999],i,mem);
     }
    
-printf("bloccato\n");
 
      for(int i=0;i<mem->num_elem;i++){
-            printf("%s,%d\n",mem->elem[i].key,mem->elem[i].values);
+           // printf("%s,%d\n",mem->elem[i].key,mem->elem[i].values);
         }
   
 
@@ -54,26 +53,24 @@ printf("bloccato\n");
 
     printf("out:%d\n",ceck_mem(dictionary[9],dictionary[4],mem));
     printf("out:%d\n",ceck_mem(dictionary[200],dictionary[9999],mem));
-        printf("out:%d\n",ceck_mem(dictionary[4444],dictionary[9999],mem));
+    printf("out:%d\n",ceck_mem(dictionary[4444],dictionary[9999],mem));
+
 
 */
-
 /*
-    char s1[]="Quando";
-    char s2[]="Q";
+    char s1[]="Quando"; //10
+    char s2[]="aaaaaa";
     distance=ric_edit_distance_mem(s1,s2,mem);    
-    printf("Distance: %d",distance);
+    printf("Distance: %d\n",distance);
 
 */
-
-
 
 
     printf("start edit distance\n");
     for(int i=0;i<size;i++)
     {   
         while (strlen(correct_me[i].word)<=0) i++;
-        printf("edit distance %s -->",correct_me[i].word);
+        printf("edit distance %s ->",correct_me[i].word);
         min=999999;
         for(int j=0;j<num_word;j++){ 
             //per ogni parola creo una nuova memoria
@@ -93,9 +90,9 @@ printf("bloccato\n");
                 min=distance;
                 pos_min=j;
             } 
-            //fprintf(after,"%s --> %s =%d\n",correct_me[i].word,dictionary[j],distance); 
+            fprintf(after,"%s --> %s =%d\n",correct_me[i].word,dictionary[j],distance); 
         }  
-        printf("%s\n",dictionary[pos_min]);         
+        printf("%s -- %d\n",dictionary[pos_min],min);         
     }
 
 

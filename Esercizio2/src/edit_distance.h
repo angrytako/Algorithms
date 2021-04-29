@@ -5,7 +5,8 @@
 
 
 typedef struct {
-    char* key;
+    char* key1;
+    char* key2;
     int values;
 } cell;
 
