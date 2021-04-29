@@ -93,7 +93,7 @@ printf("bloccato\n");
                 min=distance;
                 pos_min=j;
             } 
-            fprintf(after,"%s --> %s =%d\n",correct_me[i].word,dictionary[j],distance); 
+            //fprintf(after,"%s --> %s =%d\n",correct_me[i].word,dictionary[j],distance); 
         }  
         printf("%s\n",dictionary[pos_min]);         
     }

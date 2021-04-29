@@ -5,3 +5,4 @@ Esercizio2/*.txt
 Esercizio2/src/a.exe
 Esercizio2/src/result.txt
 .gitignore
+*.gch

@@ -27,12 +27,12 @@ int ric_edit_distance(char* str1, char* str2){
 
         dins = 1 + ric_edit_distance(rest(str1),str2);
 
-        int min=999999;
-        if (dnoop<min)min = dnoop;
-        if (dcanc<min)min = dcanc;
-        if (dins<min)min = dins;
+        //min
+        if (dcanc<dnoop)dnoop = dcanc;
+        if (dins<dnoop)dnoop = dins;
+        
 
-        return min;
+        return dnoop;
 }
 
 char* rest(char* s1){
@@ -56,7 +56,6 @@ void push_min(char* str1, char* str2,int value, memory* mem){
         key=strcat(key,str2);
         
         if(mem->num_elem>=mem->max_elem){
-                printf("%d\n",mem->max_elem);
                 mem->max_elem=(mem->max_elem)*2;
                 if((mem->elem=realloc(mem->elem,(size_t)mem->max_elem*sizeof(cell)))==NULL){
                 fprintf(stderr,"Error in allocating more memory for the cell\n");
@@ -77,26 +76,20 @@ int ceck_mem(char* str1, char* str2, memory* mem){
         int lenght=(strlen(str1) + strlen(str2)+3);
         char* key1 = malloc(sizeof(char)*lenght); 
         key1=strcpy(key1,str1);        
-        char* key2 = malloc(sizeof(char)*lenght); 
-        key2=strcpy(key2,str2);
-
+       
         char* separetor = malloc(sizeof(char));
         separetor=".";
         key1=strcat(key1,separetor);
-        key2=strcat(key2,separetor);
         free(separetor);
 
         key1=strcat(key1,str2);
-        key2=strcat(key2,str1);
+        
 
         lenght=strlen(key1);
         for (int i=0;i<mem->num_elem;i++){
-                lenght2=strlen(key1);
+                lenght2=strlen(mem->elem[i].key);
                 if (strncmp(mem->elem[i].key,key1,lenght)==0 && strncmp(mem->elem[i].key,key1,lenght2)==0 )
-                        return mem->elem[i].values;
-                if (strncmp(mem->elem[i].key,key2,lenght)==0 && strncmp(mem->elem[i].key,key2,lenght2)==0 ) 
-                        return mem->elem[i].values;
-                
+                        return mem->elem[i].values;           
         }
         return -1;
 }
@@ -117,17 +110,15 @@ int ric_edit_distance_mem( char* str1, char* str2,memory* mem){
 
         //secondo caso
         dcanc = 1 + ric_edit_distance(str1,rest(str2));
-
         dins = 1 + ric_edit_distance(rest(str1),str2);
 
-        int min=999999;
-        if (dnoop<min)min = dnoop;
-        if (dcanc<min)min = dcanc;
-        if (dins<min)min = dins;
+        //min
+        if (dcanc<dnoop)dnoop = dcanc;
+        if (dins<dnoop)dnoop = dins;
+        
+        push_min(str1,str2,dnoop,mem);
 
-        push_min(str1,str2,min,mem);
-
-        return min;
+         return dnoop;
 }
 
 
