@@ -1,16 +1,14 @@
 #include "edit_distance.h"
 
 
-int ric_edit_distance(char* str1, char* str2);
 char* rest(char* s1);
 void push_min(char* str1, char* str2,int value, memory* mem);
-int ric_edit_distance_mem( char* s1, char* s2,memory* mem);
-
 int ceck_mem(char* str1, char* str2, memory* mem);
 
 
 int ric_edit_distance(char* str1, char* str2){
-        int lenght_str1,lenght_str2,max_lenght,output;
+        if (str1==NULL || str2==NULL) return ERROR_DISTACE; 
+        int lenght_str1,lenght_str2,max_lenght;
         int dnoop=0, dcanc=0,dins=0;
        
         lenght_str1 = strlen(str1);
@@ -20,7 +18,7 @@ int ric_edit_distance(char* str1, char* str2){
         
         //caso in cui tolgo un elemento da entrambe 
         if (strncmp(str1,str2,1)==0) dnoop= ric_edit_distance(rest(str1),rest(str2));
-        else dnoop = 9999999;
+        else dnoop = ERROR_DISTACE;
 
         //secondo caso
         dcanc = 1 + ric_edit_distance(str1,rest(str2));
@@ -30,8 +28,41 @@ int ric_edit_distance(char* str1, char* str2){
         //min
         if (dcanc<dnoop)dnoop = dcanc;
         if (dins<dnoop)dnoop = dins;
-        
+        return dnoop;
+}
 
+int ric_edit_distance_mem( char* str1, char* str2,memory* mem){
+        if (str1==NULL || str2==NULL || mem==NULL) return ERROR_DISTACE; 
+        int lenght_str1,lenght_str2;
+        int dnoop=0, dcanc=0,dins=0;
+       
+        lenght_str1 = strlen(str1);
+        lenght_str2 = strlen(str2);
+        if (lenght_str1==0) return lenght_str2;
+        if (lenght_str2==0) return lenght_str1;
+        
+        dnoop=ceck_mem(str1,str2,mem);
+        if(dnoop!=-1){
+        return 1+dnoop;
+        } 
+        //caso in cui tolgo un elemento da entrambe 
+        if (strncmp(str1,str2,1)==0){ 
+                dnoop= ric_edit_distance_mem(rest(str1),rest(str2),mem);
+        }
+        else{
+                dnoop = 99999;
+        } 
+        //secondo caso
+        dcanc = 1 + ric_edit_distance_mem(str1,rest(str2),mem);
+        dins = 1 + ric_edit_distance_mem(rest(str1),str2,mem);
+
+        if (dcanc<dnoop){
+                dnoop = dcanc;
+        }
+        if (dins<dnoop){
+                dnoop = dins;
+        }
+        push_min(str1,str2,dnoop,mem);
         return dnoop;
 }
 
@@ -72,46 +103,20 @@ int ceck_mem(char* str1, char* str2, memory* mem){
         return -1;
 }
 
-int ric_edit_distance_mem( char* str1, char* str2,memory* mem){
-        int lenght_str1,lenght_str2;
-        int dnoop=0, dcanc=0,dins=0;
-       
-        lenght_str1 = strlen(str1);
-        lenght_str2 = strlen(str2);
-        if (lenght_str1==0) return lenght_str2;
-        if (lenght_str2==0) return lenght_str1;
-        
-        dnoop=ceck_mem(str1,str2,mem);
-        if(dnoop!=-1){
-        return 1+dnoop;
+
+memory* initializes_memory(memory* mem){
+        if ((mem= malloc(sizeof(memory)))==NULL) {   
+        fprintf(stderr,"Error in allocating memory for the struct mem\n");
+        return NULL;
+        }
+        mem->max_elem=ELEM_MEMORY_TABLE;
+        if ( (mem->elem= malloc(sizeof(cell)*mem->max_elem) )==NULL){
+        fprintf(stderr,"Error in allocating cell1\n");
+        return NULL;
         } 
-        //caso in cui tolgo un elemento da entrambe 
-        if (strncmp(str1,str2,1)==0){ 
-                dnoop= ric_edit_distance_mem(rest(str1),rest(str2),mem);
-        }
-        else{
-                dnoop = 99999;
-        } 
-
-        //secondo caso
-        dcanc = 1 + ric_edit_distance_mem(str1,rest(str2),mem);
-        dins = 1 + ric_edit_distance_mem(rest(str1),str2,mem);
-
-        if (dcanc<dnoop){
-                dnoop = dcanc;
-        }
-        if (dins<dnoop){
-                dnoop = dins;
-        }
-
-      
-        push_min(str1,str2,dnoop,mem);
-
-        return dnoop;
+        mem->num_elem=0;
+        return mem;
 }
-
-
-
 
 
 

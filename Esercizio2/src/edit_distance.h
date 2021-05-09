@@ -1,13 +1,15 @@
-
 #include <stdio.h>
 #include <string.h>  
 #include <stdlib.h>
 
 
-typedef struct {
-    char* key1;
-    char* key2;
-    int values;
+#define ELEM_MEMORY_TABLE 10000
+#define ERROR_DISTACE  9999999
+
+typedef struct { //per semplificare uso una doppia chiave per identificare un elemnto es casa,asa,1
+    char* key1;   //casa
+    char* key2;     //asa
+    int values;        //1
 } cell;
 
 typedef struct {
@@ -16,23 +18,15 @@ typedef struct {
     cell* elem;
 } memory;
 
-//calcola la  distanza tra le parole conteenute nel primo array e quelle contenute nel secondo
-//void edit_distance(WordAndExtras* correctme,int size, char** dictionary,int num_word);
+
 
 //versione ricorsiva base 
 int ric_edit_distance( char* s1, char* s2 );
 
 
-//prima di fare un oprazione controlla di non averla già fatta prima
-//devo vedere in che modo memorizzare l'operazione
+/*calcola la distanza tra le due stringhe utilizzanso al struct mem di appoggio
+(utilizzare initializes_memory(memory* mem) per inizializzare la struct in modo corretto)*/
 int ric_edit_distance_mem( char* s1, char* s2,memory* mem);
 
-// ritorna la stringa senza il primo carattere casa --> asa
-char* rest(char* s1);
-
-//aggiunge elemento alla lista di elementi memorizzati
-void push_min(char* str1, char* str2,int value, memory* mem);
-
-//controlla l'esistenza di un elemento in memoria
-int ceck_mem(char* str1, char* str2, memory* mem);
-
+//alloca la memoria e inizializza i campi della struct necessari per il funzionamento dell'applicazione
+memory* initializes_memory(memory* mem);

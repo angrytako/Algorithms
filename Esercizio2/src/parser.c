@@ -114,8 +114,13 @@ int get_word(FILE *st, char* buffer){
 int get_word_and_extras(FILE *st, WordAndExtras* structBuffer){
     static int lastLetter=-1;
     int intChar, j=1;
-    if(lastLetter!=-1)
+    if(lastLetter!=-1){
+        if ((char)lastLetter>='A' && (char)lastLetter<='Z') {
+                lastLetter=lastLetter+32;
+            }
         structBuffer->word[0]=(char)lastLetter;
+    }
+       
     else
         j=0;
     while (1){ 

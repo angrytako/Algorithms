@@ -1,5 +1,4 @@
 #include "parser.h"
-
 #include "edit_distance.h"
 
 
@@ -26,79 +25,71 @@ int main (){
     correct_me=parse_inspected_file(st,&size);
     dictionary=parse_dictionary(fdictionary,&num_word);
     memory* mem;
-    
     if ((mem= malloc(sizeof(memory)))==NULL) {   
         fprintf(stderr,"Error in allocating memory for the struct mem\n");
     }
-    mem->max_elem=500;
-    if ( (mem->elem= malloc(sizeof(cell)*mem->max_elem) )==NULL) fprintf(stderr,"Error in allocating cell1\n");
-    mem->num_elem=0;
-    
-
-/*
-   
-    for(int i=0;i<1000;i++){
-           // printf("%d\n",i);
-            push_min(dictionary[i],dictionary[9999],i,mem);
-    }
    
 
-     for(int i=0;i<mem->num_elem;i++){
-           // printf("%s,%d\n",mem->elem[i].key,mem->elem[i].values);
-        }
+  
   
 
 
-    
-
-    printf("out:%d\n",ceck_mem(dictionary[9],dictionary[4],mem));
-    printf("out:%d\n",ceck_mem(dictionary[200],dictionary[9999],mem));
-    printf("out:%d\n",ceck_mem(dictionary[4444],dictionary[9999],mem));
 
 
-*/
-/*
-    char s1[]="Quando"; //10
-    char s2[]="aaaaaa";
-    distance=ric_edit_distance_mem(s1,s2,mem);    
-    printf("Distance: %d\n",distance);
 
-*/
-
+//prima cerco una parola, se non c'è uso edit, se la trovo passo alla prossima
 
     printf("start edit distance\n");
     for(int i=0;i<size;i++)
-    {   
-        while (strlen(correct_me[i].word)<=0) i++;
+    {
         printf("edit distance %s ->",correct_me[i].word);
-        min=999999;
-        for(int j=0;j<num_word;j++){ 
+        min=ERROR_DISTACE;
+
+        //controllo se la parola esiste
+         for(int j=0;(j<num_word && min!=0);j++){
+             if (strcmp(correct_me[i].word,dictionary[j])==0){
+                min=0;
+                pos_min=j;
+             }
+         }
+
+        //cerco la parola più simile
+        for(int j=0;(j<num_word && min!=0);j++){ 
             //per ogni parola creo una nuova memoria
             free(mem->elem);
-            free(mem);    
-            if ((mem= malloc(sizeof(memory)))==NULL) {   
-            fprintf(stderr,"Error in allocating memory for the struct mem\n");
-            }
-            mem->max_elem=500;
-            if ( (mem->elem= malloc(sizeof(cell)*mem->max_elem) )==NULL) 
-            fprintf(stderr,"Error in allocating cell1\n");
-            mem->num_elem=0;
-
+            free(mem);   
+            mem=initializes_memory(mem);
+            
             distance=ric_edit_distance_mem(correct_me[i].word,dictionary[j],mem);    
-            //bisogna salvare le parole più vicine 
+           
             if (distance<min){
                 min=distance;
                 pos_min=j;
+                printf("%s,%d--" ,dictionary[j],distance);
             } 
-            fprintf(after,"%s --> %s =%d\n",correct_me[i].word,dictionary[j],distance); 
-        }  
-        printf("%s -- %d\n",dictionary[pos_min],min);         
+                
+            //fprintf(after,"%s --> %s =%d\n",correct_me[i].word,dictionary[j],distance); 
+        }      
+        printf("--%s,%d\n" ,dictionary[pos_min],min);
+        fprintf(after,"%s",dictionary[pos_min]);
+        fprintf(after,"%s",correct_me[i].extra);
     }
 
 
 
-
-
-
+    //free memoria
+/*
+    free(mem->elem);
+    free(mem);   
+    for(int j=0;j<num_word;j++){ 
+        free(dictionary[j]);
+    }
+    for(int i=0;i<size;i++){
+        free(correct_me[i].extra);
+        free(correct_me[i].word);
+    }
+    free(correct_me);
+    free(dictionary);
+*/
 
 }
