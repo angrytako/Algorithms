@@ -3,11 +3,15 @@
 
 
 int main (){
+/*dare la possibilità di input*/
+
     FILE* st, *after , *fdictionary;
     WordAndExtras *correct_me;
+    Memory* mem;
     char **dictionary;
-    int size,num_word,pos_min;
-    int distance=0,min=99999;
+    int size,numWord,pos_min;
+    int distance=0,min;
+
 
     if((st=fopen("../correctme.txt","r"))==NULL){
         fprintf(stderr,"Unable to open input file!\n");
@@ -23,11 +27,9 @@ int main (){
     }
 
     correct_me=parse_inspected_file(st,&size);
-    dictionary=parse_dictionary(fdictionary,&num_word);
-    memory* mem;
-    if ((mem= malloc(sizeof(memory)))==NULL) {   
-        fprintf(stderr,"Error in allocating memory for the struct mem\n");
-    }
+    dictionary=parse_dictionary(fdictionary,&numWord);
+  
+    
    
 
   
@@ -40,24 +42,28 @@ int main (){
 //prima cerco una parola, se non c'è uso edit, se la trovo passo alla prossima
 
     printf("start edit distance\n");
+    /*for per le parole del file di input*/
     for(int i=0;i<size;i++)
     {
         printf("edit distance %s ->",correct_me[i].word);
         min=ERROR_DISTACE;
-
-        //controllo se la parola esiste
-         for(int j=0;(j<num_word && min!=0);j++){
+        /*trasfomare minusxala in maiuscola*/
+        //controllo se la parola esiste   /*aggiungere bynery search*/
+        for(int j=0;(j<numWord && min!=0);j++){
              if (strcmp(correct_me[i].word,dictionary[j])==0){
                 min=0;
                 pos_min=j;
              }
          }
 
-        //cerco la parola più simile
-        for(int j=0;(j<num_word && min!=0);j++){ 
+        //cerco la parola più simile nel dizionario
+        for(int j=0;(j<numWord && min!=0);j++){ 
             //per ogni parola creo una nuova memoria
-            free(mem->elem);
-            free(mem);   
+            if (j!=0){
+                free(mem->elem);
+                free(mem);  
+            }
+             
             mem=initializes_memory(mem);
             
             distance=ric_edit_distance_mem(correct_me[i].word,dictionary[j],mem);    
@@ -78,10 +84,10 @@ int main (){
 
 
     //free memoria
-/*
+
     free(mem->elem);
     free(mem);   
-    for(int j=0;j<num_word;j++){ 
+    for(int j=0;j<numWord;j++){ 
         free(dictionary[j]);
     }
     for(int i=0;i<size;i++){
@@ -90,6 +96,6 @@ int main (){
     }
     free(correct_me);
     free(dictionary);
-*/
+
 
 }
