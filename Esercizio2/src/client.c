@@ -1,23 +1,24 @@
 #include "parser.h"
+#include "bin_search.h"
 #include "edit_distance.h"
 
 
 int main (){
 /*dare la possibilità di input*/
 
-    FILE* st, *after , *fdictionary;
-    WordAndExtras *correct_me;
+    FILE* inputFile, *result , *fdictionary;
+    WordAndExtras *correctMe;
     Memory* mem;
     char **dictionary;
-    int size,numWord,pos_min;
-    int distance=0,min;
+    int inputWord,numWord,pos_min;
+    int distance=0,min,firsCapital=0;
 
 
-    if((st=fopen("../correctme.txt","r"))==NULL){
+    if((inputFile=fopen("../correctme.txt","r"))==NULL){
         fprintf(stderr,"Unable to open input file!\n");
         return -1;
     }
-    if((after=fopen("result.txt","w"))==NULL){
+    if((result=fopen("result.txt","w"))==NULL){
         fprintf(stderr,"Unable to open input file!\n");
         return -1;
     }
@@ -26,7 +27,7 @@ int main (){
         return -1;
     }
 
-    correct_me=parse_inspected_file(st,&size);
+    correctMe=parse_inspected_file(inputFile,&inputWord);
     dictionary=parse_dictionary(fdictionary,&numWord);
   
     
@@ -35,65 +36,57 @@ int main (){
   
   
 
-
-
-
-
-//prima cerco una parola, se non c'è uso edit, se la trovo passo alla prossima
-
-    printf("start edit distance\n");
-    /*for per le parole del file di input*/
-    for(int i=0;i<size;i++)
+    //prima cerco una parola, se non c'è uso edit, se la trovo passo alla prossima
+    printf("start edit distance:\n");
+    /*for sulle parole di input ->(la frase da trasformare)*/
+    for(int i=0;i<inputWord;i++)
     {
-        printf("edit distance %s ->",correct_me[i].word);
+        printf("edit distance %s: ",correctMe[i].word);
         min=ERROR_DISTACE;
-        /*trasfomare minusxala in maiuscola*/
+        
+        if ( (*correctMe[i].word >='A') && (*correctMe[i].word<='Z')) {
+               *correctMe[i].word=*correctMe[i].word+32;
+               firsCapital = 1; 
+            }
         //controllo se la parola esiste   /*aggiungere bynery search*/
-        for(int j=0;(j<numWord && min!=0);j++){
-             if (strcmp(correct_me[i].word,dictionary[j])==0){
-                min=0;
-                pos_min=j;
-             }
-         }
+        pos_min= bin_search(dictionary,correctMe[i].word,numWord);
+        if (strcmp(correctMe[i].word,dictionary[pos_min])==0)   min=0;
+        
+  
 
         //cerco la parola più simile nel dizionario
         for(int j=0;(j<numWord && min!=0);j++){ 
             //per ogni parola creo una nuova memoria
-            if (j!=0){
-                free(mem->elem);
-                free(mem);  
-            }
-            mem=initializes_memory(mem);
-            
-            distance=ric_edit_distance_mem(correct_me[i].word,dictionary[j],mem);    
-           
+            if (j!=0) free_memory_edit_distance(mem);
+            mem=initializes_memory_edit_distance(mem);
+        
+            distance=ric_edit_distance_mem(correctMe[i].word,dictionary[j],mem);    
+            //controllo se è la parola più vicina
             if (distance<min){
                 min=distance;
                 pos_min=j;
-                printf("%s,%d--" ,dictionary[j],distance);
-            } 
-                
-            //fprintf(after,"%s --> %s =%d\n",correct_me[i].word,dictionary[j],distance); 
-        }      
-        printf("--%s,%d\n" ,dictionary[pos_min],min);
-        fprintf(after,"%s%s",dictionary[pos_min],correct_me[i].extra);
+                printf(" %s->%d ||" ,dictionary[j],distance);
+            }       
+            //fprintf(result,"%s --> %s =%d\n",correctMe[i].word,dictionary[j],distance); 
+        }  
+
+
+        /* output della parola più vicina*/
+        if (firsCapital==1)  *dictionary[pos_min]= *dictionary[pos_min]-32;
+    
+        printf(" %s->%i\n" ,dictionary[pos_min],min);
+        fprintf(result,"%s%s",dictionary[pos_min],correctMe[i].extra);      
+        if (firsCapital==1){
+            *dictionary[pos_min]= *dictionary[pos_min]+32;
+            firsCapital=0;
+        }
+
     }
 
 
 
-    //free memoria
-
-    free(mem->elem);
-    free(mem);   
-    for(int j=0;j<numWord;j++){ 
-        free(dictionary[j]);
-    }
-    for(int i=0;i<size;i++){
-        free(correct_me[i].extra);
-        free(correct_me[i].word);
-    }
-    free(correct_me);
-    free(dictionary);
+    free_memory_parser(dictionary,numWord,correctMe,inputWord);
+    free_memory_edit_distance(mem);
 
 
 }

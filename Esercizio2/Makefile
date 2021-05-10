@@ -14,8 +14,8 @@ createdir:
 build/%.o: src/%.c $(COMMON_DEPS)
 	gcc $(CFLAGS) -c $< -o $@
 
-bin/client: build/parser.o build/edit_distance.o build/client.o $(COMMON_DEPS)
-	gcc -o bin/client build/parser.o build/edit_distance.o build/client.o
+bin/client: build/parser.o build/bin_search.o build/edit_distance.o build/client.o $(COMMON_DEPS)
+	gcc -o bin/client build/parser.o build/edit_distance.o build/client.o build/bin_search.o
 
 bin/edit_distance_unit_test: build/edit_distance.o build/edit_distance_unit_test.o build/unity.o $(COMMON_DEPS)
 	gcc -o bin/edit_distance_unit_test build/edit_distance.o build/unity.o build/edit_distance_unit_test.o

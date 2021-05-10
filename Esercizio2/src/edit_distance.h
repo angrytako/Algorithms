@@ -1,5 +1,6 @@
 #ifndef EDIT_DISTANCE_H
 #define EDIT_DISTANCE_H
+
 #include <stdio.h>
 #include <string.h>  
 #include <stdlib.h>
@@ -19,8 +20,8 @@ typedef struct Cell{ //per semplificare uso una doppia chiave per identificare u
 } Cell;
 
 typedef struct Memory{
-    int num_elem;
-    int max_elem;
+    int numElem;
+    int maxElem;
     Cell* elem;
 } Memory;
 
@@ -35,5 +36,8 @@ int ric_edit_distance( char* s1, char* s2 );
 int ric_edit_distance_mem( char* s1, char* s2,Memory* mem);
 
 //alloca la memoria e inizializza i campi della struct necessari per il funzionamento dell'applicazione
-Memory* initializes_memory(Memory* mem);
+Memory* initializes_memory_edit_distance(Memory* mem);
+
+//libera la memoria allocata dalla struct utilizzata dall'edit_distance
+void free_memory_edit_distance(Memory* mem);
 #endif

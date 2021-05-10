@@ -80,9 +80,9 @@ int hash(char* str1, char* str2){
 void push_min(char* str1, char* str2,int value, Memory* mem){
       
       /*
-        if(mem->num_elem>=mem->max_elem){
-                mem->max_elem=(mem->max_elem)*2;
-                if((mem->elem=realloc(mem->elem,(size_t)mem->max_elem*sizeof(Cell)))==NULL){
+        if(mem->numElem>=mem->maxElem){
+                mem->maxElem=(mem->maxElem)*2;
+                if((mem->elem=realloc(mem->elem,(size_t)mem->maxElem*sizeof(Cell)))==NULL){
                  fprintf(stderr,"Error in allocating more memory for the cell\n");
             }
         }
@@ -111,11 +111,11 @@ void push_min(char* str1, char* str2,int value, Memory* mem){
                 elem.next->next=NULL;
         }
         /*
-        mem->elem[mem->num_elem].key1 = str1;
-        mem->elem[mem->num_elem].key2= str2;
-        mem->elem[mem->num_elem].values=value;  
+        mem->elem[mem->numElem].key1 = str1;
+        mem->elem[mem->numElem].key2= str2;
+        mem->elem[mem->numElem].values=value;  
         
-        mem->num_elem++;    
+        mem->numElem++;    
           */    
 }
 
@@ -143,7 +143,8 @@ int ceck_mem(char* str1, char* str2, Memory* mem){
         
 
         /*
-        for (int i=0;i<mem->num_elem;i++){
+        for (int i=0;i<mem->numElem
+        ;i++){
                 if (strcmp(mem->elem[i].key1,str1)==0 ){
                         if (strcmp(mem->elem[i].key2,str2)==0 ){
                         return mem->elem[i].values;   
@@ -155,24 +156,31 @@ int ceck_mem(char* str1, char* str2, Memory* mem){
 }
 
 
-Memory* initializes_memory(Memory* mem){
+Memory* initializes_memory_edit_distance(Memory* mem){
         if ((mem= malloc(sizeof(Memory)))==NULL) {   
                 fprintf(stderr,"Error in allocating memory for the struct mem\n");
                 return NULL;
         }
-        mem->max_elem=ELEM_MEMORY_TABLE;
-        if ( (mem->elem= malloc(sizeof(Cell)*(unsigned int)mem->max_elem) )==NULL){
+        mem->maxElem=ELEM_MEMORY_TABLE;
+        if ( (mem->elem= malloc(sizeof(Cell)*(unsigned int)mem->maxElem) )==NULL){
         fprintf(stderr,"Error in allocating cell1\n");
         return NULL;
         } 
-        mem->num_elem=0;
+        mem->numElem=0;
         
-        for (int i=0;i<mem->max_elem;i++){
+        for (int i=0;i<mem->maxElem;i++){
                 mem->elem[i].key1=NULL;
                 mem->elem[i].next=NULL;
         }
         return mem;
 }
+
+
+void free_memory_edit_distance(Memory* mem){
+    free(mem->elem);
+    free(mem); 
+}
+
 
 
 

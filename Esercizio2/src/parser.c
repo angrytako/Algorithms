@@ -68,7 +68,6 @@ WordAndExtras* parse_inspected_file (FILE* st, int* nrElems){
     {
     
         if(i>=maxNumElem){
-          //  printf("realloc %lld\n",maxNumElem);
             maxNumElem*=2;
             if((toBeInspected=realloc(toBeInspected,(size_t)maxNumElem*sizeof(*toBeInspected)))==NULL){
                 fprintf(stderr,"Error in allocating more memory for the file to be inspected\n");
@@ -115,9 +114,6 @@ int get_word_and_extras(FILE *st, WordAndExtras* structBuffer){
     static int lastLetter=-1;
     int intChar, j=1;
     if(lastLetter!=-1){
-        if ((char)lastLetter>='A' && (char)lastLetter<='Z') {
-                lastLetter=lastLetter+32;
-            }
         structBuffer->word[0]=(char)lastLetter;
     }
        
@@ -127,9 +123,6 @@ int get_word_and_extras(FILE *st, WordAndExtras* structBuffer){
         intChar=getc(st);
         if(!(((char)intChar>='A' && (char)intChar<='Z') || ((char)intChar>='a' && (char)intChar<='z')) || intChar==-1)
             break;
-            if ((char)intChar>='A' && (char)intChar<='Z') {
-                intChar=intChar+32;
-            }
             structBuffer->word[j]=(char)intChar;
                 j++;
         }
@@ -153,24 +146,17 @@ int get_word_and_extras(FILE *st, WordAndExtras* structBuffer){
  
     return 0;
 }
-/*
-void print_record(FILE *st, Record passage){
-    fprintf(st,"%d,%s,%d,%f",passage.id,passage.field1,passage.field2,passage.field3);
-}
-void print_all_records(FILE* st, Record* records,  int nrRecords){
-    int i;
-    for(i=0;i<nrRecords;i++)
-    {
-        print_record(st,records[i]);
-        fprintf(st,"\n");
+
+
+
+void free_memory_parser(char** dictionary, int numWord, WordAndExtras* correctMe,int inputWord){  
+    for(int j=0;j<numWord;j++){ 
+        free(dictionary[j]);
     }
-}
-void print_k_stats(FILE* st, int k, long time){
-    static char isFirstTime=1;
-    if(isFirstTime){
-        fprintf(st,"K,Time\n");
-        isFirstTime=0;
+    for(int i=0;i<inputWord;i++){
+        free(correctMe[i].extra);
+        free(correctMe[i].word);
     }
-    fprintf(st,"%d,%li\n",k,time);
-    fflush(st);
-}*/
+    free(correctMe);
+    free(dictionary);
+}
