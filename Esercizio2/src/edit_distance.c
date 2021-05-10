@@ -3,6 +3,7 @@
 
 void push_min(char* str1, char* str2,int value, Memory* mem);
 int ceck_mem(char* str1, char* str2, Memory* mem);
+int hash(char* str1, char* str2);
 
 
 int ric_edit_distance(char* str1, char* str2){
@@ -41,8 +42,9 @@ int ric_edit_distance_mem( char* str1, char* str2,Memory* mem){
         if (lenght_str2==0) return lenght_str1;
         
         /*uso donoop come variabile di appoggio*/
-        dnoop=ceck_mem(str1,str2,mem);
         
+        dnoop=ceck_mem(str1,str2,mem);
+
         if(dnoop!=-1){
         return dnoop;
         } 
@@ -61,29 +63,86 @@ int ric_edit_distance_mem( char* str1, char* str2,Memory* mem){
 }
 
 
-
+int hash(char* str1, char* str2){
+        int pos=0;
+        int length = strlen(str1);
+        for (int i=0;i<length;i++){ 
+                pos = pos + (str1[i])*i;
+        }
+        length = strlen(str2);
+        for (int i=0;i<length;i++){ 
+                pos = pos + str2[i]-i;
+        }
+        return (pos%ELEM_MEMORY_TABLE);
+}
 
 
 void push_min(char* str1, char* str2,int value, Memory* mem){
       
+      /*
         if(mem->num_elem>=mem->max_elem){
                 mem->max_elem=(mem->max_elem)*2;
                 if((mem->elem=realloc(mem->elem,(size_t)mem->max_elem*sizeof(Cell)))==NULL){
                  fprintf(stderr,"Error in allocating more memory for the cell\n");
             }
         }
+        */
+        int pos=hash(str1,str2);
         
+
+        
+        if (mem->elem[pos].key1==NULL){
+                mem->elem[pos].key1 = str1;
+                mem->elem[pos].key2= str2;
+                mem->elem[pos].values=value;   
+        }
+        else {
+                int count=0;
+                Cell elem=  mem->elem[pos];
+                while (elem.key1==NULL){
+                        printf("collisionec\n");
+                        elem= *elem.next;
+                }
+                elem.key1 = str1;
+                elem.key2= str2;
+                elem.values=value;  
+                elem.next=malloc(sizeof(Cell));
+                elem.next->key1=NULL;
+                elem.next->next=NULL;
+        }
+        /*
         mem->elem[mem->num_elem].key1 = str1;
         mem->elem[mem->num_elem].key2= str2;
         mem->elem[mem->num_elem].values=value;  
         
         mem->num_elem++;    
-              
+          */    
 }
 
 
 int ceck_mem(char* str1, char* str2, Memory* mem){  
 
+        int pos=hash(str1,str2);
+
+        Cell elem=  mem->elem[pos];
+        while(elem.key1!=NULL){
+                while (strcmp(elem.key1,str1)!=0){
+                        if (elem.next==NULL) return -1; 
+                        elem= *elem.next; 
+
+                }
+                if (strcmp(elem.key2,str2)==0 ){
+                        return elem.values;
+                }else{
+                        if (elem.next==NULL) return -1; 
+                        elem= *elem.next; 
+                }   
+        }
+        return -1;
+        
+        
+
+        /*
         for (int i=0;i<mem->num_elem;i++){
                 if (strcmp(mem->elem[i].key1,str1)==0 ){
                         if (strcmp(mem->elem[i].key2,str2)==0 ){
@@ -92,6 +151,7 @@ int ceck_mem(char* str1, char* str2, Memory* mem){
                 }        
         }
         return -1;
+        */
 }
 
 
@@ -101,11 +161,16 @@ Memory* initializes_memory(Memory* mem){
                 return NULL;
         }
         mem->max_elem=ELEM_MEMORY_TABLE;
-        if ( (mem->elem= malloc(sizeof(Cell)*mem->max_elem) )==NULL){
+        if ( (mem->elem= malloc(sizeof(Cell)*(unsigned int)mem->max_elem) )==NULL){
         fprintf(stderr,"Error in allocating cell1\n");
         return NULL;
         } 
         mem->num_elem=0;
+        
+        for (int i=0;i<mem->max_elem;i++){
+                mem->elem[i].key1=NULL;
+                mem->elem[i].next=NULL;
+        }
         return mem;
 }
 

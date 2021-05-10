@@ -63,7 +63,6 @@ int main (){
                 free(mem->elem);
                 free(mem);  
             }
-             
             mem=initializes_memory(mem);
             
             distance=ric_edit_distance_mem(correct_me[i].word,dictionary[j],mem);    
@@ -77,8 +76,7 @@ int main (){
             //fprintf(after,"%s --> %s =%d\n",correct_me[i].word,dictionary[j],distance); 
         }      
         printf("--%s,%d\n" ,dictionary[pos_min],min);
-        fprintf(after,"%s",dictionary[pos_min]);
-        fprintf(after,"%s",correct_me[i].extra);
+        fprintf(after,"%s%s",dictionary[pos_min],correct_me[i].extra);
     }
 
 

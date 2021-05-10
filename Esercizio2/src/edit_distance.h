@@ -7,7 +7,7 @@
 
 
 
-#define ELEM_MEMORY_TABLE 10000
+#define ELEM_MEMORY_TABLE 988
 #define ERROR_DISTACE  INT_MAX
 #define REST(x) (x +1) 
 
@@ -15,7 +15,7 @@ typedef struct Cell{ //per semplificare uso una doppia chiave per identificare u
     char* key1;   //casa
     char* key2;     //asa
     int values;        //1
-//struct Cell* next;
+    struct Cell* next;
 } Cell;
 
 typedef struct Memory{
