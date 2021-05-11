@@ -8,7 +8,7 @@
 
 
 
-#define ELEM_MEMORY_TABLE 988
+#define ELEM_MEMORY_TABLE 677
 #define ERROR_DISTACE  INT_MAX
 #define REST(x) (x +1) 
 
@@ -20,7 +20,6 @@ typedef struct Cell{ //per semplificare uso una doppia chiave per identificare u
 } Cell;
 
 typedef struct Memory{
-    int numElem;
     int maxElem;
     Cell* elem;
 } Memory;

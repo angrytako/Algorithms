@@ -121,8 +121,7 @@ int get_word_and_extras(FILE *st, WordAndExtras* structBuffer){
         j=0;
     while (1){ 
         intChar=getc(st);
-        if(!(((char)intChar>='A' && (char)intChar<='Z') || ((char)intChar>='a' && (char)intChar<='z')) || intChar==-1)
-            break;
+        if(!(((char)intChar>='A' && (char)intChar<='Z') || ((char)intChar>='a' && (char)intChar<='z')) || intChar==-1) break;
             structBuffer->word[j]=(char)intChar;
                 j++;
         }

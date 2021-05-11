@@ -45,10 +45,11 @@ int main (){
         min=ERROR_DISTACE;
         
         if ( (*correctMe[i].word >='A') && (*correctMe[i].word<='Z')) {
-               *correctMe[i].word=*correctMe[i].word+32;
+               *correctMe[i].word=(char)((int)*correctMe[i].word+32);
                firsCapital = 1; 
             }
-        //controllo se la parola esiste   /*aggiungere bynery search*/
+            
+        //controllo se la parola esiste   
         pos_min= bin_search(dictionary,correctMe[i].word,numWord);
         if (strcmp(correctMe[i].word,dictionary[pos_min])==0)   min=0;
         
@@ -72,21 +73,18 @@ int main (){
 
 
         /* output della parola più vicina*/
-        if (firsCapital==1)  *dictionary[pos_min]= *dictionary[pos_min]-32;
+        if (firsCapital==1)  *dictionary[pos_min]= (char)((int)*dictionary[pos_min]-32);
     
         printf(" %s->%i\n" ,dictionary[pos_min],min);
         fprintf(result,"%s%s",dictionary[pos_min],correctMe[i].extra);      
         if (firsCapital==1){
-            *dictionary[pos_min]= *dictionary[pos_min]+32;
+            *dictionary[pos_min]= (char)((int)*dictionary[pos_min]+32);
             firsCapital=0;
         }
 
     }
 
-
-
     free_memory_parser(dictionary,numWord,correctMe,inputWord);
     free_memory_edit_distance(mem);
-
 
 }
