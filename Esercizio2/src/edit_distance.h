@@ -4,7 +4,7 @@
 #include <string.h>  
 #include <stdlib.h>
 #include <limits.h>
-
+#include "mybst.h"
 
 
 #define ELEM_MEMORY_TABLE 10000
@@ -21,7 +21,7 @@ typedef struct Cell{ //per semplificare uso una doppia chiave per identificare u
 typedef struct Memory{
     int num_elem;
     int max_elem;
-    Cell* elem;
+    Node* root;
 } Memory;
 
 
@@ -32,7 +32,7 @@ int ric_edit_distance( char* s1, char* s2 );
 
 /*calcola la distanza tra le due stringhe utilizzanso al struct mem di appoggio
 (utilizzare initializes_memory(memory* mem) per inizializzare la struct in modo corretto)*/
-int ric_edit_distance_mem( char* s1, char* s2,Memory* mem);
+int ric_edit_distance_mem( char* s1, char* s2,Memory* mem, FILE* st);
 
 //alloca la memoria e inizializza i campi della struct necessari per il funzionamento dell'applicazione
 Memory* initializes_memory(Memory* mem);

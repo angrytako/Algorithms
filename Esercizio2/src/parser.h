@@ -1,3 +1,5 @@
+#ifndef EDIT_DISTANCE_PARSER
+#define EDIT_DISTANCE_PARSER
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,3 +24,4 @@ char** parse_dictionary(FILE* st, int* nrElems);
  il nr di struct (parole + caratteri extra) in memoria, e ha come output un puntatore 
  a un'array di struct WordAndExtras*/
 WordAndExtras* parse_inspected_file (FILE* st, int* nrElems);
+#endif

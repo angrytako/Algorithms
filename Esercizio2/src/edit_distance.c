@@ -1,5 +1,5 @@
 #include "edit_distance.h"
-
+#include <time.h>
 
 void push_min(char* str1, char* str2,int value, Memory* mem);
 int ceck_mem(char* str1, char* str2, Memory* mem);
@@ -7,6 +7,7 @@ int ceck_mem(char* str1, char* str2, Memory* mem);
 
 int ric_edit_distance(char* str1, char* str2){
         if (str1==NULL || str2==NULL) return ERROR_DISTACE; 
+    
         int lenght_str1,lenght_str2;
         int dnoop=0, dcanc=0,dins=0;
        
@@ -30,8 +31,9 @@ int ric_edit_distance(char* str1, char* str2){
         return dnoop;
 }
 
-int ric_edit_distance_mem( char* str1, char* str2,Memory* mem){
+int ric_edit_distance_mem( char* str1, char* str2,Memory* mem, FILE * fp){
         if (str1==NULL || str2==NULL || mem==NULL) return ERROR_DISTACE; 
+        time_t before, after;
         int lenght_str1,lenght_str2;
         int dnoop=0, dcanc=0,dins=0;
        
@@ -41,17 +43,19 @@ int ric_edit_distance_mem( char* str1, char* str2,Memory* mem){
         if (lenght_str2==0) return lenght_str1;
         
         /*uso donoop come variabile di appoggio*/
+        time(&before);
         dnoop=ceck_mem(str1,str2,mem);
-        
+        time(&after);
+        fprintf(fp,"%I64d,%d \n",after-before,dnoop);
         if(dnoop!=-1){
-        return dnoop;
+         return dnoop;
         } 
         //caso in cui tolgo un elemento da entrambe 
-        if (*str1==*str2) dnoop= ric_edit_distance_mem(REST(str1),REST(str2),mem);
+        if (*str1==*str2) dnoop= ric_edit_distance_mem(REST(str1),REST(str2),mem,fp);
         else dnoop = ERROR_DISTACE; 
         //secondo caso
-        dcanc = 1 + ric_edit_distance_mem(str1,REST(str2),mem);
-        dins = 1 + ric_edit_distance_mem(REST(str1),str2,mem);
+        dcanc = 1 + ric_edit_distance_mem(str1,REST(str2),mem,fp);
+        dins = 1 + ric_edit_distance_mem(REST(str1),str2,mem,fp);
         /*minimo*/
         if (dcanc<dnoop) dnoop = dcanc;
         if (dins<dnoop) dnoop = dins;
@@ -65,33 +69,34 @@ int ric_edit_distance_mem( char* str1, char* str2,Memory* mem){
 
 
 void push_min(char* str1, char* str2,int value, Memory* mem){
-      
+        /*
         if(mem->num_elem>=mem->max_elem){
                 mem->max_elem=(mem->max_elem)*2;
                 if((mem->elem=realloc(mem->elem,(size_t)mem->max_elem*sizeof(Cell)))==NULL){
                  fprintf(stderr,"Error in allocating more memory for the cell\n");
             }
-        }
-        
+        }*/
+        mem->root=insert(mem->root,str1,str2,value);
+        /*
         mem->elem[mem->num_elem].key1 = str1;
         mem->elem[mem->num_elem].key2= str2;
         mem->elem[mem->num_elem].values=value;  
         
-        mem->num_elem++;    
+        mem->num_elem++;    */
               
 }
 
 
 int ceck_mem(char* str1, char* str2, Memory* mem){  
 
-        for (int i=0;i<mem->num_elem;i++){
+        /*for (int i=0;i<mem->num_elem;i++){
                 if (strcmp(mem->elem[i].key1,str1)==0 ){
                         if (strcmp(mem->elem[i].key2,str2)==0 ){
                         return mem->elem[i].values;   
                         }
                 }        
-        }
-        return -1;
+        }*/
+        return find(mem->root,str1,str2);
 }
 
 
@@ -100,12 +105,13 @@ Memory* initializes_memory(Memory* mem){
                 fprintf(stderr,"Error in allocating memory for the struct mem\n");
                 return NULL;
         }
-        mem->max_elem=ELEM_MEMORY_TABLE;
+      /*  mem->max_elem=ELEM_MEMORY_TABLE;
         if ( (mem->elem= malloc(sizeof(Cell)*mem->max_elem) )==NULL){
         fprintf(stderr,"Error in allocating cell1\n");
         return NULL;
         } 
-        mem->num_elem=0;
+        mem->num_elem=0;*/
+        mem->root=NULL;
         return mem;
 }
 

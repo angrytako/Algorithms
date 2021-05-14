@@ -1,7 +1,9 @@
+package unionfind;
 public class Node<T>{
     private T elem;
     private Node<T> next;
     private int rank;
+    
     public Node(T elem,  Node<T> next){
         this.elem=elem;
         this.next=next;
