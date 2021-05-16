@@ -1,29 +1,35 @@
 #include "edit_distance.h"
-#include <time.h>
-
-void push_min(char* str1, char* str2,int value, Memory* mem);
-int ceck_mem(char* str1, char* str2, Memory* mem);
 
 
+int classic_edit_distance(char* str1, char* str2);
+int edit( char* str1, char* str2,int** mem,int min,int this);
+
+int** initializes_memory_edit_distance(int str1, int str2);
+void free_memory_edit_distance(int** mem,int str1);
+
+        
 int ric_edit_distance(char* str1, char* str2){
         if (str1==NULL || str2==NULL) return ERROR_DISTACE; 
-    
+        else return classic_edit_distance(str1,str2);
+}      
+
+int classic_edit_distance(char* str1, char* str2){
         int lenght_str1,lenght_str2;
         int dnoop=0, dcanc=0,dins=0;
        
-        lenght_str1 = strlen(str1);
-        lenght_str2 = strlen(str2);
+        lenght_str1 = (int)strlen(str1);
+        lenght_str2 = (int)strlen(str2);
         if (lenght_str1==0) return lenght_str2;
         if (lenght_str2==0) return lenght_str1;
         
         //caso in cui tolgo un elemento da entrambe 
-        if (*str1==*str2) dnoop= ric_edit_distance(REST(str1),REST(str2));
+        if (*str1==*str2) dnoop= classic_edit_distance(REST(str1),REST(str2));
         else dnoop = ERROR_DISTACE;
 
         //secondo caso
-        dcanc = 1 + ric_edit_distance(str1,REST(str2));
+        dcanc = 1 + classic_edit_distance(str1,REST(str2));
 
-        dins = 1 + ric_edit_distance(REST(str1),str2);
+        dins = 1 + classic_edit_distance(REST(str1),str2);
     
         //min
         if (dcanc<dnoop)dnoop = dcanc;
@@ -31,91 +37,70 @@ int ric_edit_distance(char* str1, char* str2){
         return dnoop;
 }
 
-int ric_edit_distance_mem( char* str1, char* str2,Memory* mem, FILE * fp){
-        if (str1==NULL || str2==NULL || mem==NULL) return ERROR_DISTACE; 
-        time_t before, after;
+int dinamic_edit( char* str1, char* str2,int min){
+        if (str1==NULL || str2==NULL) return ERROR_DISTACE; 
+        else
+        {
+                int lenght_str1 = (int)strlen(str1);
+                int lenght_str2 = (int)strlen(str2);
+                int** mem;
+                mem = initializes_memory_edit_distance(lenght_str1,lenght_str2);
+                int outPut = edit(str1,str2,mem,min,0);
+                free_memory_edit_distance(mem,lenght_str1);
+                return outPut;
+        } 
+}
+
+int edit( char* str1, char* str2,int** mem,int min,int this){
+        if (this>=min) return 10;
+
         int lenght_str1,lenght_str2;
         int dnoop=0, dcanc=0,dins=0;
        
-        lenght_str1 = strlen(str1);
-        lenght_str2 = strlen(str2);
+        lenght_str1 = (int)strlen(str1);
+        lenght_str2 = (int)strlen(str2);
         if (lenght_str1==0) return lenght_str2;
         if (lenght_str2==0) return lenght_str1;
         
-        /*uso donoop come variabile di appoggio*/
-        time(&before);
-        dnoop=ceck_mem(str1,str2,mem);
-        time(&after);
-        fprintf(fp,"%I64d,%d \n",after-before,dnoop);
-        if(dnoop!=-1){
-         return dnoop;
-        } 
+        /*uso donoop come variabile di appoggio*/  
+        if (mem[lenght_str1-1][lenght_str2-1]>=0) return mem[lenght_str1-1][lenght_str2-1];
+
         //caso in cui tolgo un elemento da entrambe 
-        if (*str1==*str2) dnoop= ric_edit_distance_mem(REST(str1),REST(str2),mem,fp);
+        if (*str1==*str2) dnoop= edit(REST(str1),REST(str2),mem,min,this);
         else dnoop = ERROR_DISTACE; 
         //secondo caso
-        dcanc = 1 + ric_edit_distance_mem(str1,REST(str2),mem,fp);
-        dins = 1 + ric_edit_distance_mem(REST(str1),str2,mem,fp);
+        dcanc = 1 + edit(str1,REST(str2),mem,min,this+1);
+        dins = 1 + edit(REST(str1),str2,mem,min,this+1);
         /*minimo*/
         if (dcanc<dnoop) dnoop = dcanc;
         if (dins<dnoop) dnoop = dins;
-        /*salvo il minimo nell'array di struct*/
-        push_min(str1,str2,dnoop,mem);
+
+
+        /*salvo il minimo*/
+        mem[lenght_str1-1][lenght_str2-1]=dnoop;
         return dnoop;
 }
 
 
 
 
+int** initializes_memory_edit_distance(int lenght_str1, int lenght_str2){
+        int** mem;
+        mem=malloc(sizeof(int*)*(unsigned int)(lenght_str1));
 
-void push_min(char* str1, char* str2,int value, Memory* mem){
-        /*
-        if(mem->num_elem>=mem->max_elem){
-                mem->max_elem=(mem->max_elem)*2;
-                if((mem->elem=realloc(mem->elem,(size_t)mem->max_elem*sizeof(Cell)))==NULL){
-                 fprintf(stderr,"Error in allocating more memory for the cell\n");
-            }
-        }*/
-        mem->root=insert(mem->root,str1,str2,value);
-        /*
-        mem->elem[mem->num_elem].key1 = str1;
-        mem->elem[mem->num_elem].key2= str2;
-        mem->elem[mem->num_elem].values=value;  
-        
-        mem->num_elem++;    */
-              
-}
-
-
-int ceck_mem(char* str1, char* str2, Memory* mem){  
-
-        /*for (int i=0;i<mem->num_elem;i++){
-                if (strcmp(mem->elem[i].key1,str1)==0 ){
-                        if (strcmp(mem->elem[i].key2,str2)==0 ){
-                        return mem->elem[i].values;   
-                        }
-                }        
-        }*/
-        return find(mem->root,str1,str2);
-}
-
-
-Memory* initializes_memory(Memory* mem){
-        if ((mem= malloc(sizeof(Memory)))==NULL) {   
-                fprintf(stderr,"Error in allocating memory for the struct mem\n");
-                return NULL;
+        for(int i=0;i<lenght_str1;i++){ 
+                mem[i]=malloc(sizeof(int)*(unsigned int)(lenght_str2));
+                mem[i]=  memset ( mem[i], -1, sizeof(int)*(unsigned int)(lenght_str2)  );
         }
-      /*  mem->max_elem=ELEM_MEMORY_TABLE;
-        if ( (mem->elem= malloc(sizeof(Cell)*mem->max_elem) )==NULL){
-        fprintf(stderr,"Error in allocating cell1\n");
-        return NULL;
-        } 
-        mem->num_elem=0;*/
-        mem->root=NULL;
+
         return mem;
 }
 
 
-
-
+void free_memory_edit_distance(int** mem,int lenght_str1){
+        for(int i=0;i<lenght_str1;i++){ 
+                free(mem[i]);
+        }
+        free(mem);
+}
 

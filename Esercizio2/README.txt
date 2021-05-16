@@ -23,3 +23,12 @@
 
 Per la momorizzazione delle esecuzioni precedenti è stata utilizzata un' array di
 struct. Ogni struct è identiifcata dalle da due chiavi: key1=stringa 1, key2=stringa2.
+
+
+
+
+
+descrizione di help
+
+
+cose partivolari, confronto con versione base
