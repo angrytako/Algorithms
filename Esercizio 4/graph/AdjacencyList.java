@@ -1,9 +1,9 @@
-package graph;
+
 import java.lang.Object;
 import java.util.AbstractMap;
 import java.util.Map;
 import java.util.HashMap;
-
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 /**
@@ -43,7 +43,8 @@ public class AdjacencyList<T,S extends Comparable<S>>{
     public void addingArc(T u,T v, S weight){
         if (ArcExist(u,v))   /*crea erore*/;
         else{                      
-            Arc<T,S> elem = new Arc<T,S>(v,graph.get(u),weight);
+            Arc<T,S> elem = new Arc<T,S>(v,graph.get(u),weight); /*dara' null anche se 
+            il nodo non esiste. Attento a non fare errori*/ 
             graph.put(u,elem);
         }
         if (direct==false){
@@ -154,32 +155,43 @@ public class AdjacencyList<T,S extends Comparable<S>>{
      * It Recovery all node of the graph.
      * @return List<T> of nodes
      */
-    public List<T> getAllNode(){
-        List<T> allNode;      
-        allNode = new ArrayList<T>(nodeNumber()); 
+    public ArrayList<T> getAllNode(){
+        ArrayList<T> allNodes;      
+        allNodes = new ArrayList<T>(nodeNumber()); 
        
         for (T key : graph.keySet()) {
-            allNode.add(key);
+            allNodes.add(key);
         }
-        return allNode;
+        return allNodes;
     }
 
     /** 
      * It Recovery all arc of the graph.
      * @return List<Arc<T,S>> of nodes
      */
-    public List<Arc<T,S>> getAllArc(){
-        List<ArcList<T,S>> allArc;      
-        allArc = new ArrayList<ArcList<T,S>>(arcNumber()); 
+    public ArrayList<FullArc<T,S>> getAllArc(){
+        ArrayList<FullArc<T,S>> allArc = new ArrayList<FullArc<T,S>>(arcNumber()); 
+        for(Map.Entry<T,Arc<T,S>> pair : graph.entrySet()){
+            T baseNode=pair.getKey();
+            Arc<T,S> arc =pair.getValue();
+                while(arc!=null){
+                    allArc.add(new FullArc<>(baseNode,arc.getElem(),arc.getWeight()));
+                    arc=arc.getNext();
+                }
+              
+        }  return allArc;
+        
+        /*ArrayList<FullArc<T,S>> allArc;      
+        allArc = new ArrayList<FullArc<T,S>>(arcNumber()); 
         for (Arc<T,S> arc : graph.values() ) {
-            T nodoBase=arc.getElem();
+            T baseNode=arc.getElem();
             while(arc!=null){
-                ArcList<T,S> elem= new ArcList(nodoBase,arc.getElem(),arc.getWeight());
-                allArc.add(elem);
+                allArc.add(new FullArc<>(baseNode,arc.getElem(),arc.getWeight()));
+               
             }
         }
         return allArc;
-    
+    */
     }
 
     /** 
@@ -187,10 +199,10 @@ public class AdjacencyList<T,S extends Comparable<S>>{
      * @param node the node from which Recovery adjacent nodes
      * @return List<T> of node
      */
-    public List<T> getAdjacentNode(T node){
+    public ArrayList<T> getAdjacentNode(T node){
           
         if(nodeExist(node)){
-            List<T> allArc = new ArrayList<T>();
+            ArrayList<T> allArc = new ArrayList<T>();
             Arc<T,S> elem = graph.get(node);
 
             while(elem!=null){

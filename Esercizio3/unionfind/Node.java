@@ -28,7 +28,7 @@ public class Node<T>{
         if(this.next==null)
             return this;
         else {
-            System.out.println(this.next.getElem());
+           // System.out.println(this.next.getElem());
             this.next=this.next.find();
             return this.next;
         }
