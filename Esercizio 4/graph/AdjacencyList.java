@@ -6,13 +6,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+
+
 /**
  *
- * @author Laurentiu, Enrico.
+ * @author Laurentiu, Enrico
  */
 public class AdjacencyList<T,S extends Comparable<S>>{
     private boolean direct;
     private Map<T, Arc<T,S>> graph;
+    private int arcNumber;
 
     /**
      * It creates an empty graph. 
@@ -27,32 +30,34 @@ public class AdjacencyList<T,S extends Comparable<S>>{
     /** 
      * It adding an element.
      * @param elem the element to add
+     * @throws AdjacencyListException if node just exist
      */
-    public void addingNode( T elem){
-        //cerco se esiste
+    public void addingNode ( T elem)throws AdjacencyListException{
         if (!nodeExist(elem))
             graph.put(elem, null);
-        /*    
-        else genero errore */
+        else 
+            throw new AdjacencyListException("Node just exisit");
     }
     
     /** 
      * It adding an arc.
-     * @param elem the element to add
+     * @param u the first node of arc
+     * @param v the second node of arc
+     * @param weight the weight of arc
+     * @throws AdjacencyListException if nodes u,v not exist or arc u-v just exist
      */
-    public void addingArc(T u,T v, S weight){
-        if (ArcExist(u,v))   /*crea erore*/;
+    public void addingArc(T u,T v, S weight) throws AdjacencyListException {
+        if (!nodeExist(u) || !nodeExist(v))   throw new AdjacencyListException("Node not exisit");
+        if (ArcExist(u,v)) throw new AdjacencyListException("Arc just exisit");
         else{                      
             Arc<T,S> elem = new Arc<T,S>(v,graph.get(u),weight); /*dara' null anche se 
             il nodo non esiste. Attento a non fare errori*/ 
             graph.put(u,elem);
+            this.arcNumber++;
         }
-        if (direct==false){
-            if (ArcExist(v,u))   /*crea erore*/;
-            else{                      
-                Arc<T,S> elem = new Arc<T,S>(u,graph.get(v),weight);
+        if (direct==false){                    
+                Arc<T,S> elem = new Arc<T,S>(u,graph.get(v),weight,true);
                 graph.put(v,elem);
-            }
         }
         
     }
@@ -94,38 +99,49 @@ public class AdjacencyList<T,S extends Comparable<S>>{
      * @param elem the elem to delate
      */
     public void nodeDelete (T elem){
-        graph.remove(elem);
+        if (nodeExist(elem)) graph.remove(elem);
     }
 
+
+     /** 
+     * It delate one arc between tro arc.  
+     * @param u first node of arc
+     * @param v second node of arc
+     * @throws AdjacencyListException if nodes u,v not exist
+     */
+    public void arcDelete (T u, T v) throws AdjacencyListException {
+        if(direct==false) arcDelete(u,v,false);
+        else arcDelete(u,v,true);
+    }
     /** 
      * It delate one arc between tro arc.  
      * @param u first node of arc
      * @param v second node of arc
+     * @param clearEndArc false if it must delet the copy indirected arc
+     * @throws AdjacencyListException if nodes u,v not exist
      */
-    public void arcDelete (T u, T v){
+    private void arcDelete (T u, T v, boolean clearSecondArc) throws AdjacencyListException {
         Arc<T,S> elem=graph.get(u); 
-        if (elem==null) return;
-        if (elem.getElem().equals(v)) elem.setNext(elem.getNext().getNext());
+        if (elem==null) throw new AdjacencyListException("Arc not  exisit");
+        if (elem.getElem().equals(v)) {
+            graph.replace(u, elem.getNext());
+            if(clearSecondArc==false) arcDelete(v,u,true);
+            else arcNumber--;
+            return;
+        }
 
         while(elem.getNext()!=null){
-            if (elem.getNext().equals(v)){
+            if (elem.getNext().getElem().equals(v)){
                 elem.setNext(elem.getNext().getNext());
+                if(clearSecondArc==false) arcDelete(v,u,true);
+                else arcNumber--;
+                return;
             }
-            elem=elem.getNext();
+            elem=elem.getNext(); 
         }
-        if(direct==false){
-        elem=graph.get(v); 
-        if (elem==null) return;
-        if (elem.getElem().equals(u)) elem.setNext(elem.getNext().getNext());
-
-        while(elem.getNext()!=null){
-            if (elem.getNext().equals(u)){
-                elem.setNext(elem.getNext().getNext());
-            }
-            elem=elem.getNext();
-        }
-        }
+        throw new AdjacencyListException("Arc not  exisit");
     }
+
 
     /** 
      * It determination the number of node in the graph.
@@ -140,15 +156,7 @@ public class AdjacencyList<T,S extends Comparable<S>>{
      * @return Number of arc in the graph
      */
     public int arcNumber(){
-        int count=0;
-        for (Arc<T,S> elem : graph.values() ) {
-            while(elem!=null){
-                count++;
-                elem=elem.getNext();
-            }
-        }
-        return count;
-
+        return arcNumber;
     }
 
     /** 
@@ -167,7 +175,7 @@ public class AdjacencyList<T,S extends Comparable<S>>{
 
     /** 
      * It Recovery all arc of the graph.
-     * @return List<Arc<T,S>> of nodes
+     * @return ArrayList whith all arc
      */
     public ArrayList<FullArc<T,S>> getAllArc(){
         ArrayList<FullArc<T,S>> allArc = new ArrayList<FullArc<T,S>>(arcNumber()); 
@@ -175,23 +183,11 @@ public class AdjacencyList<T,S extends Comparable<S>>{
             T baseNode=pair.getKey();
             Arc<T,S> arc =pair.getValue();
                 while(arc!=null){
-                    allArc.add(new FullArc<>(baseNode,arc.getElem(),arc.getWeight()));
+                    if (!arc.isFake()) allArc.add(new FullArc<>(baseNode,arc.getElem(),arc.getWeight()));
                     arc=arc.getNext();
                 }
-              
+
         }  return allArc;
-        
-        /*ArrayList<FullArc<T,S>> allArc;      
-        allArc = new ArrayList<FullArc<T,S>>(arcNumber()); 
-        for (Arc<T,S> arc : graph.values() ) {
-            T baseNode=arc.getElem();
-            while(arc!=null){
-                allArc.add(new FullArc<>(baseNode,arc.getElem(),arc.getWeight()));
-               
-            }
-        }
-        return allArc;
-    */
     }
 
     /** 
@@ -219,7 +215,7 @@ public class AdjacencyList<T,S extends Comparable<S>>{
      * It Recovery the weight of specific arc.
      * @param u first node of arc
      * @param v second node of arc
-     * @return S -> the weight of arc
+     * @return the weight of arc if exist, else null
      */
     public S getWeightArc(T u, T v)
     {

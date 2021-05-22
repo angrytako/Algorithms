@@ -27,4 +27,11 @@ public class   FullArc<T,S extends Comparable<S>>{
         return weight;
     }
 
+    public boolean equals(FullArc y){
+        if (this.firtsNode.equals(y.getFirtsNode())==false) return false;
+        if (this.secondNode.equals(y.getSecondNode())==false) return false;
+        if (this.weight.equals(y.getWeight())==false) return false;
+        return true;
+    }
+
 }
