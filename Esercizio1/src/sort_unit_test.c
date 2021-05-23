@@ -211,9 +211,10 @@ void test_merge_arr_null(){
 }
 
 void test_merge_cmp_null(){
-    char *a=NULL;
+    char a[]={'m','e','r','g','e',0};
+    char expected[]={'m','e','r','g','e',0};
     merge(a,NULL,0,0,0,0); /*dovrebbe dare qualche tipo di errore, se tentasse di accedere alla "funzione"*/
-    TEST_ASSERT(a==NULL);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected,a,SIZE(a));
 }
 void test_merge_bad_indexes(){
     int a[]={12,24,21,-2,5,22};
@@ -281,6 +282,99 @@ void test_merge_in_char(){
     TEST_ASSERT_EQUAL_CHAR_ARRAY(expected,a, SIZE(a));
 }
 
+            /*test della funzione finale di sorting*/
+
+void test_sort_arr_null(){
+    int *a=NULL;
+    sort_k(a,compare_int,0,0,1); /*dovrebbe dare qualche tipo di errore, se tentasse di accedere all "array"*/
+    TEST_ASSERT(a==NULL);
+}
+
+void test_sort_cmp_null(){
+    int a[]={91,21,44,-12};
+    int expected[]={91,21,44,-12};
+    sort_k(a,NULL,sizeof(*a),SIZE(a),1); /*dovrebbe dare qualche tipo di errore, se tentasse di accedere alla "funzione"*/
+    TEST_ASSERT_EQUAL_INT_ARRAY(expected,a,SIZE(a));
+}
+
+void test_sort_k_lt_one(){
+    char a[]={'d','f'};
+    char expected[]={'d','f'};
+    sort_k(a,compare_char,0,0,0); /*dovrebbe dare qualche tipo di errore,o entrare in un loop infinito, se provasse 
+                                     a farlo partire con k<1*/
+    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected,a,SIZE(a));
+}
+
+void test_sort_k_one_all_same_elem(){
+    char a[]={'m','m','m','m','m'};
+    char expected[]={'m','m','m','m','m'};
+    sort_k(a,compare_char,sizeof(*a),SIZE(a),1); 
+    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected,a,SIZE(a));
+}
+void test_sort_k_gt_one_all_same_elem(){
+    int a[]={66,66,66,66,66,66,66};
+    int expected[]={66,66,66,66,66,66,66};
+    sort_k(a,compare_int,sizeof(*a),SIZE(a),11); 
+    TEST_ASSERT_EQUAL_INT_ARRAY(expected,a,SIZE(a));
+}
+
+
+void test_sort_k_one_oredered(){
+    int a[]={-1,6,21,90};
+    int expected[]={-1,6,21,90};
+    sort_k(a,compare_int,sizeof(*a),SIZE(a),1); 
+    TEST_ASSERT_EQUAL_INT_ARRAY(expected,a,SIZE(a));
+}
+
+void test_sort_k_gt_one_oredered(){
+    int a[]={-213,299,9000,1002100210};
+    int expected[]={-213,299,9000,1002100210};
+    sort_k(a,compare_int,sizeof(*a),SIZE(a),21); 
+    TEST_ASSERT_EQUAL_INT_ARRAY(expected,a,SIZE(a));
+}
+void test_sort_k_one_rev_order(){
+    int a[]={1000,100,10,0,-55};
+    int expected[]={-55,0,10,100,1000};
+    sort_k(a,compare_int,sizeof(*a),SIZE(a),1); 
+    TEST_ASSERT_EQUAL_INT_ARRAY(expected,a,SIZE(a));
+}
+
+void test_sort_k_gt_one_rev_order(){
+    int a[]={1024,512,256,128,-64};
+    int expected[]={-64,128,256,512,1024};
+    sort_k(a,compare_int,sizeof(*a),SIZE(a),11); 
+    TEST_ASSERT_EQUAL_INT_ARRAY(expected,a,SIZE(a));
+}
+
+void test_sort_k_one_from_offset(){
+    char a[]={'m','u','s','i','c'};
+    char expected[]={'m','u','c','i','s'};
+    sort_k(a+2,compare_char,sizeof(*a),3,1); 
+    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected,a,SIZE(a));
+}
+void test_sort_k_gt_one_from_offset(){
+    int a[]={27,-40,22,102,-11,99};
+    int expected[]={27,-40,22,-11,99,102};
+    sort_k(a+3,compare_int,sizeof(*a),3,90); 
+    TEST_ASSERT_EQUAL_INT_ARRAY(expected,a,SIZE(a));
+}
+
+void test_sort_k_one_till_offset(){
+    int a[]={382,122,-21,565,22,13};
+    int expected[]={-21,122,382,565,22,13};
+    sort_k(a,compare_int,sizeof(*a),4,1); 
+    TEST_ASSERT_EQUAL_INT_ARRAY(expected,a,SIZE(a));
+}
+
+void test_sort_k_gt_one_till_offset(){
+    int a[]={77,-21,201,404,-13,-321,33};
+    int expected[]={-21,77,201,404,-13,-321,33};
+    sort_k(a,compare_int,sizeof(*a),4,33); 
+    TEST_ASSERT_EQUAL_INT_ARRAY(expected,a,SIZE(a));
+}
+/*
+
+*/
 int main(void)
 {
 UNITY_BEGIN();
@@ -335,5 +429,21 @@ RUN_TEST(test_merge_from_begining_until_offset);
 RUN_TEST(test_merge_in_order);
 RUN_TEST(test_merge_unbalanced_indexes);
 RUN_TEST(test_merge_in_char);
+
+/*sort_k*/
+
+RUN_TEST(test_sort_arr_null);
+RUN_TEST(test_sort_cmp_null);
+RUN_TEST(test_sort_k_lt_one);
+RUN_TEST(test_sort_k_one_all_same_elem);
+RUN_TEST(test_sort_k_gt_one_all_same_elem);
+RUN_TEST(test_sort_k_one_oredered);
+RUN_TEST(test_sort_k_gt_one_oredered);
+RUN_TEST(test_sort_k_one_rev_order);
+RUN_TEST(test_sort_k_gt_one_rev_order);
+RUN_TEST(test_sort_k_one_from_offset);
+RUN_TEST(test_sort_k_gt_one_from_offset);
+RUN_TEST(test_sort_k_one_till_offset);
+RUN_TEST(test_sort_k_gt_one_till_offset);
 return UNITY_END();
 }

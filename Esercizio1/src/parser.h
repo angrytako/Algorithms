@@ -23,5 +23,5 @@ void print_record(FILE *st, Record passage);
 di 20 000 000 di struct*/
 void print_all_records(FILE* st, Record* records,  int nrRecords);
 /*crea file csv per salvare le stat del tempo e le k*/
-void print_k_stats(FILE* st, int k, long time);
+void print_k_stats(FILE* st, int k, unsigned long time);
 #endif
