@@ -7,7 +7,6 @@
 2) make clean (nella directory corrente ci deve essere il Makefile opportuno)
 
 ***ESECUZIONE***
-
 --PER ESEGUIRE edit_distance---
 1) Compilare --> per compilare solo il client utilizzare make client
 2) I file correctme e dictionary si devono trovare nella cartella .../Esercizio2
@@ -19,16 +18,8 @@
 2) posizionarsi in .../Esercizio2/bin
 3) ./test.exe
 
+***Dizzionario*** 
+Il programma utilizza un dizionario con nome: "dictionary.txt" e path: ".../Esercizio2/dictionary.txt" 
+Contenente una parola per riga.
 
 
-Per la momorizzazione delle esecuzioni precedenti è stata utilizzata un' array di
-struct. Ogni struct è identiifcata dalle da due chiavi: key1=stringa 1, key2=stringa2.
-
-
-
-
-
-descrizione di help
-
-
-cose partivolari, confronto con versione base
