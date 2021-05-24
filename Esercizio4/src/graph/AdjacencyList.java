@@ -39,8 +39,6 @@ public class AdjacencyList<T,S extends Comparable<S>>{
     public void addNode ( T elem){
         if (!nodeExists(elem))
             graph.put(elem, null);
-        else 
-            return;
     }
     
     /** 

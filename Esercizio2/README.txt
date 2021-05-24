@@ -9,9 +9,8 @@
 ***ESECUZIONE***
 --PER ESEGUIRE edit_distance---
 1) Compilare --> per compilare solo il client utilizzare make client
-2) I file correctme e dictionary si devono trovare nella cartella .../Esercizio2
-3) posizionarsi in .../Esercizio2/bin
-4) ./client.exe --> l'output comparirà sul file txt ".../Esercizio2/bin/result.txt"
+2) posizionarsi in .../Esercizio2/bin
+3) ./client.exe  Se si vuole "correggere" un file diverso da courrectme.txt ./client.exe "path file"
 
 ---PER ESEGUIRE edit_distance_unit_test---
 1) Compilare -> make test per compilare solo gli unit test
