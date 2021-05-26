@@ -1,3 +1,5 @@
+COMPILAIZONE, CANCELLAZIONE Richiedono l'istallazione di ANT (library and command-line tool) -> https://ant.apache.org/ 
+
 ***COMPILAZIONE***
 ---Tutto---
 1) posizionarsi in .../Esercizio4

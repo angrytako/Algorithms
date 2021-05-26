@@ -112,21 +112,58 @@ public class AdjacencyListTest {
     assertFalse("it find arc but it not exist",nonDirectedList.ArcExists("Torino","Milano"));
   }
 
-
+//node delete
   @Test 
-  public void testNodeDeleteDirect(){
+  public void testNodeDeleteDirect1(){
     adjacencyList.addNode("Torino");
     adjacencyList.addNode("Milano");
     adjacencyList.nodeDelete("Torino");
     assertTrue(!adjacencyList.nodeExists("Torino") );
   } 
   @Test 
-  public void testNodeDeleteUndirect(){
+  public void testNodeDeleteUndirect1(){
     nonDirectedList.addNode("Torino");
     nonDirectedList.addNode("Milano");
     nonDirectedList.nodeDelete("Torino");
     assertTrue(!nonDirectedList.nodeExists("Torino") );
   }
+  @Test 
+  public void testNodeDeleteDirect2(){
+    adjacencyList.addNode("Torino");
+    adjacencyList.addNode("Milano");
+    adjacencyList.addNode("Genova");
+    adjacencyList.addNode("Pinerolo");
+    try{
+      adjacencyList.addArc("Torino","Milano",200);
+      adjacencyList.addArc("Torino","Genova",275);
+      adjacencyList.addArc("Torino","Pinerolo",50); 
+    }
+    catch(AdjacencyListException error){
+        assertTrue(error.toString(),false);
+    }
+    adjacencyList.nodeDelete("Torino");
+    assertFalse("The arc continues to exist",adjacencyList.ArcExists("Torino","Genova") );
+    assertFalse("Another arc not more exist",adjacencyList.ArcExists("Torino","Pinerolo") );
+  } 
+  @Test 
+  public void testNodeDeleteUndirect2(){
+    nonDirectedList.addNode("Torino");
+    nonDirectedList.addNode("Milano");
+    nonDirectedList.addNode("Genova");
+    nonDirectedList.addNode("Pinerolo");
+    try{
+        nonDirectedList.addArc("Torino","Milano",200);
+        nonDirectedList.addArc("Torino","Genova",275);
+        nonDirectedList.addArc("Torino","Pinerolo",50); 
+    }
+    catch(AdjacencyListException error){
+        assertTrue(error.toString(),false);
+    }
+    nonDirectedList.nodeDelete("Torino");
+    assertFalse("The arc continues to exist",nonDirectedList.ArcExists("Torino","Genova") );
+    assertFalse("Another arc not more exist",nonDirectedList.ArcExists("Torino","Pinerolo") );
+  }
+
 
  //arc delete
   @Test 
