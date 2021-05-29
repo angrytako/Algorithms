@@ -16,8 +16,8 @@ import java.util.ArrayList;
  * It must extend comparable
  */
 public class AdjacencyList<T,S extends Comparable<S>>{
-    private boolean directed;
     private Map<T, Arc<T,S>> graph;
+    private boolean directed;
     private int numberArcs;
 
     /**
@@ -39,8 +39,6 @@ public class AdjacencyList<T,S extends Comparable<S>>{
     public void addNode ( T elem){
         if (!nodeExists(elem))
             graph.put(elem, null);
-        else 
-            return;
     }
     
     /** 
@@ -99,11 +97,23 @@ public class AdjacencyList<T,S extends Comparable<S>>{
 
     /** 
      * It deletes a node. If the node does not exist it does nothing.
-     * @param elem the element to delete.
+     * @param elem the element to delete
      */
     public void nodeDelete (T elem){
-        if (nodeExists(elem)) graph.remove(elem);
+        if (nodeExists(elem)){
+            Arc<T,S> arcNode = graph.get(elem); 
+                while (arcNode!=null){
+                    try {
+                        arcDelete(elem,arcNode.getElem());
+                    }catch(AdjacencyListException error){
+                        System.out.println("Error! This error can't exist");
+                    }
+                    arcNode=arcNode.getNext();
+                }
+            graph.remove(elem);
+        }
     }
+
 
 
      /** 

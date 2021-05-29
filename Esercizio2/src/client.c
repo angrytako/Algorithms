@@ -23,7 +23,7 @@ int main (int argn, char **args){
 
 
     if((inputFile=fopen(input_path,"r"))==NULL){
-        fprintf(stderr,"Unable to open input file:%s\n",input_path);
+        fprintf(stderr,"Unable to open input file, path:%s\n",input_path);
         return -1;
     }
     if((result=fopen("result.txt","w"))==NULL){
@@ -64,8 +64,8 @@ int main (int argn, char **args){
         
         //cerco la parola più simile nel dizionario
         for(int j=0;(j<numWord && min!=0);j++){ 
-            //per ogni parola creo una nuova memoria
-
+            
+            //distance=ric_edit_distance(correctMe[i].word,dictionary[j]);    
             distance=dinamic_edit(correctMe[i].word,dictionary[j],min);    
             //controllo se è la parola più vicina
             if (distance<min){
@@ -90,5 +90,6 @@ int main (int argn, char **args){
     }
 
     free_memory_parser(dictionary,numWord,correctMe,inputWord);
+    printf("Result in /bin/result.txt");
 
 }

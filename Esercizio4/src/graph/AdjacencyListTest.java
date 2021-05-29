@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class AdjacencyListTest {
   private AdjacencyList<String,Integer> adjacencyList;
   private AdjacencyList<String,Integer> nonDirectedList;
+  private AdjacencyList<Integer,String> genericAdjacencyList;  
   private AdjacencyList<Integer,Integer> nonDirectedIntegerList;
   private Kruskal<Integer,Integer> kruskalInteger;
   private Kruskal<String,Integer> kruskalString;
@@ -22,39 +23,18 @@ public class AdjacencyListTest {
   @Before
   public void AdjacencyList(){
     this.adjacencyList = new AdjacencyList<String,Integer>(true);
+    this.genericAdjacencyList = new AdjacencyList<Integer,String>(true);
     this.nonDirectedList = new AdjacencyList<String,Integer>(false);
     this.nonDirectedIntegerList=new AdjacencyList<Integer,Integer>(false);
 
   } 
-/*
-  @Test
-  public void testAddingNodeDirect(){
-    try{
-        adjacencyList.addNode("Torino");
-        adjacencyList.addNode("Milano");
-        assertTrue(true);
-    }
-    catch(AdjacencyListException error){
-        assertTrue(error.toString(),false);
-    }
-  }
-  @Test
-  public void testAddingNodeUndirect(){
-    try{
-        nonDirectedList.addNode("Torino");
-        nonDirectedList.addNode("Milano");
-        assertTrue(true);
-    }
-    catch(AdjacencyListException error){
-        assertTrue(error.toString(),false);
-    }
-  }
 
+ 
   @Test
   public void testAddingArcDirect(){
+    adjacencyList.addNode("Torino");
+    adjacencyList.addNode("Milano");
     try{
-        adjacencyList.addNode("Torino");
-        adjacencyList.addNode("Milano");
         adjacencyList.addArc("Torino","Milano",200);
         assertTrue(true);
     }
@@ -64,9 +44,9 @@ public class AdjacencyListTest {
   }
   @Test
   public void testAddingArcUndirect(){
+    nonDirectedList.addNode("Torino");
+    nonDirectedList.addNode("Milano");
     try{
-        nonDirectedList.addNode("Torino");
-        nonDirectedList.addNode("Milano");
         nonDirectedList.addArc("Torino","Milano",200);
         assertTrue(true);
     }
@@ -77,39 +57,29 @@ public class AdjacencyListTest {
 
   @Test 
   public void testUnionFindDirect(){
-    assertTrue("The graf is not direct",adjacencyList.isDirect());
+    assertTrue("The graf is not direct",adjacencyList.isDirected());
   }
   @Test 
   public void testUnionFindUndirect(){
-    assertFalse("The graf is direct",nonDirectedList.isDirect());
+    assertFalse("The graf is direct",nonDirectedList.isDirected());
   }
 
   @Test 
   public void testNodeExistDirect(){
-    try{
-        adjacencyList.addNode("Torino");
-    }
-    catch(AdjacencyListException error){
-        assertTrue(error.toString(),false);
-    }
+    adjacencyList.addNode("Torino");
     assertTrue("it don't find the node",adjacencyList.nodeExists("Torino"));
   }  
   @Test 
   public void testNodeExistUndirect(){
-    try{
-        nonDirectedList.addNode("Torino");
-    }
-    catch(AdjacencyListException error){
-        assertTrue(error.toString(),false);
-    }
+    nonDirectedList.addNode("Torino");
     assertTrue("it don't find the node",nonDirectedList.nodeExists("Torino"));
   }
 
   @Test 
   public void tastArcExistDirect1(){
+    adjacencyList.addNode("Torino");
+    adjacencyList.addNode("Milano");
     try{
-        adjacencyList.addNode("Torino");
-        adjacencyList.addNode("Milano");
         adjacencyList.addArc("Torino","Milano",200);
     }
     catch(AdjacencyListException error){
@@ -119,9 +89,9 @@ public class AdjacencyListTest {
   }
   @Test 
   public void tastArcExistUndirect1(){
+    nonDirectedList.addNode("Torino");
+    nonDirectedList.addNode("Milano");
     try{
-        nonDirectedList.addNode("Torino");
-        nonDirectedList.addNode("Milano");
         nonDirectedList.addArc("Torino","Milano",200);
     }
     catch(AdjacencyListException error){
@@ -131,59 +101,76 @@ public class AdjacencyListTest {
   }
   @Test 
   public void tastArcExistDirect2(){
-    try{
-        adjacencyList.addNode("Torino");
-        adjacencyList.addNode("Milano");
-    }
-    catch(AdjacencyListException error){
-        assertTrue(error.toString(),false);
-    }
+    adjacencyList.addNode("Torino");
+    adjacencyList.addNode("Milano");
     assertFalse("it find arc but it not exist",adjacencyList.ArcExists("Torino","Milano"));
   }
   @Test 
   public void tastArcExistUndirect2(){
-    try{
-        nonDirectedList.addNode("Torino");
-        nonDirectedList.addNode("Milano");
-    }
-    catch(AdjacencyListException error){
-        assertTrue(error.toString(),false);
-    }
+    nonDirectedList.addNode("Torino");
+    nonDirectedList.addNode("Milano");
     assertFalse("it find arc but it not exist",nonDirectedList.ArcExists("Torino","Milano"));
   }
 
-
+//node delete
   @Test 
-  public void testNodeDeleteDirect(){
+  public void testNodeDeleteDirect1(){
+    adjacencyList.addNode("Torino");
+    adjacencyList.addNode("Milano");
+    adjacencyList.nodeDelete("Torino");
+    assertTrue(!adjacencyList.nodeExists("Torino") );
+  } 
+  @Test 
+  public void testNodeDeleteUndirect1(){
+    nonDirectedList.addNode("Torino");
+    nonDirectedList.addNode("Milano");
+    nonDirectedList.nodeDelete("Torino");
+    assertTrue(!nonDirectedList.nodeExists("Torino") );
+  }
+  @Test 
+  public void testNodeDeleteDirect2(){
+    adjacencyList.addNode("Torino");
+    adjacencyList.addNode("Milano");
+    adjacencyList.addNode("Genova");
+    adjacencyList.addNode("Pinerolo");
     try{
-        adjacencyList.addNode("Torino");
-        adjacencyList.addNode("Milano");
+      adjacencyList.addArc("Torino","Milano",200);
+      adjacencyList.addArc("Torino","Genova",275);
+      adjacencyList.addArc("Torino","Pinerolo",50); 
     }
     catch(AdjacencyListException error){
         assertTrue(error.toString(),false);
     }
     adjacencyList.nodeDelete("Torino");
-    assertTrue(!adjacencyList.nodeExists("Torino") );
+    assertFalse("The arc continues to exist",adjacencyList.ArcExists("Torino","Genova") );
+    assertFalse("Another arc not more exist",adjacencyList.ArcExists("Torino","Pinerolo") );
   } 
   @Test 
-  public void testNodeDeleteUndirect(){
+  public void testNodeDeleteUndirect2(){
+    nonDirectedList.addNode("Torino");
+    nonDirectedList.addNode("Milano");
+    nonDirectedList.addNode("Genova");
+    nonDirectedList.addNode("Pinerolo");
     try{
-        nonDirectedList.addNode("Torino");
-        nonDirectedList.addNode("Milano");
+        nonDirectedList.addArc("Torino","Milano",200);
+        nonDirectedList.addArc("Torino","Genova",275);
+        nonDirectedList.addArc("Torino","Pinerolo",50); 
     }
     catch(AdjacencyListException error){
         assertTrue(error.toString(),false);
     }
     nonDirectedList.nodeDelete("Torino");
-    assertTrue(!nonDirectedList.nodeExists("Torino") );
+    assertFalse("The arc continues to exist",nonDirectedList.ArcExists("Torino","Genova") );
+    assertFalse("Another arc not more exist",nonDirectedList.ArcExists("Torino","Pinerolo") );
   }
 
- /*arc delete
+
+ //arc delete
   @Test 
   public void testArcDeleteDirect1(){
+    adjacencyList.addNode("Torino");
+    adjacencyList.addNode("Milano");
     try{
-        adjacencyList.addNode("Torino");
-        adjacencyList.addNode("Milano");
         adjacencyList.addArc("Torino","Milano",200);
         adjacencyList.arcDelete("Torino","Milano");
     }
@@ -194,9 +181,9 @@ public class AdjacencyListTest {
   } 
   @Test 
   public void testArcDeleteUndirect1(){
+    nonDirectedList.addNode("Torino");
+    nonDirectedList.addNode("Milano");
     try{
-        nonDirectedList.addNode("Torino");
-        nonDirectedList.addNode("Milano");
         nonDirectedList.addArc("Torino","Milano",200);
         nonDirectedList.arcDelete("Torino","Milano");
     }
@@ -209,11 +196,11 @@ public class AdjacencyListTest {
 
   @Test 
   public void testArcDeleteDirect2(){
+    adjacencyList.addNode("Torino");
+    adjacencyList.addNode("Milano");
+    adjacencyList.addNode("Genova");
+    adjacencyList.addNode("Pinerolo");
     try{
-        adjacencyList.addNode("Torino");
-        adjacencyList.addNode("Milano");
-        adjacencyList.addNode("Genova");
-        adjacencyList.addNode("Pinerolo");
         adjacencyList.addArc("Torino","Milano",200);
         adjacencyList.addArc("Torino","Genova",275);
         adjacencyList.addArc("Torino","Pinerolo",50);
@@ -227,11 +214,12 @@ public class AdjacencyListTest {
   } 
   @Test 
   public void testArcDeleteUndirect2(){
+    nonDirectedList.addNode("Torino");
+    nonDirectedList.addNode("Milano");
+    nonDirectedList.addNode("Genova");
+    nonDirectedList.addNode("Pinerolo");
     try{
-        nonDirectedList.addNode("Torino");
-        nonDirectedList.addNode("Milano");
-        nonDirectedList.addNode("Genova");
-        nonDirectedList.addNode("Pinerolo");
+        
         nonDirectedList.addArc("Torino","Milano",200);
         nonDirectedList.addArc("Torino","Genova",275);
         nonDirectedList.addArc("Torino","Pinerolo",50);
@@ -245,7 +233,7 @@ public class AdjacencyListTest {
   }
 
 
-  /*Node number
+  //Node number
   @Test 
   public void testNodeNumberDirect1(){
     assertTrue("node number wrong",adjacencyList.numberNodes()==0);
@@ -256,31 +244,22 @@ public class AdjacencyListTest {
   }
   @Test 
   public void testNodeNumberDirect2(){
-    try{
-        adjacencyList.addNode("Torino");
-        adjacencyList.addNode("Milano");
-        adjacencyList.addNode("Genova");
-    }
-    catch(AdjacencyListException error){
-        assertTrue(error.toString(),false);
-    }
+    adjacencyList.addNode("Torino");
+    adjacencyList.addNode("Milano");
+    adjacencyList.addNode("Genova");
+ 
     assertTrue("node number wrong",adjacencyList.numberNodes()==3);
   }
   @Test 
   public void testNodeNumberUndirect2(){
-    try{
-        nonDirectedList.addNode("Torino");
-        nonDirectedList.addNode("Milano");
-        nonDirectedList.addNode("Genova");
-    }
-    catch(AdjacencyListException error){
-        assertTrue(error.toString(),false);
-    }
+    nonDirectedList.addNode("Torino");
+    nonDirectedList.addNode("Milano");
+    nonDirectedList.addNode("Genova");
     assertTrue("node number wrong",nonDirectedList.numberNodes()==3);
   } 
   
   
-  /*Arc number
+  //Arc number
   @Test 
   public void testArcNumberDirect1(){
     assertTrue("arc number wrong",adjacencyList.numberArcs()==0);
@@ -291,11 +270,11 @@ public class AdjacencyListTest {
   }
   @Test 
   public void testArcNumberDirect2(){
+    adjacencyList.addNode("Torino");
+    adjacencyList.addNode("Milano");
+    adjacencyList.addNode("Genova");
+    adjacencyList.addNode("Pinerolo");
     try{
-        adjacencyList.addNode("Torino");
-        adjacencyList.addNode("Milano");
-        adjacencyList.addNode("Genova");
-        adjacencyList.addNode("Pinerolo");
         adjacencyList.addArc("Torino","Milano",200);
         adjacencyList.addArc("Torino","Genova",275);
         adjacencyList.addArc("Torino","Pinerolo",50);
@@ -309,11 +288,11 @@ public class AdjacencyListTest {
   }
   @Test 
   public void testArcNumberUndirect2(){
+    nonDirectedList.addNode("Torino");
+    nonDirectedList.addNode("Milano");
+    nonDirectedList.addNode("Genova");
+    nonDirectedList.addNode("Pinerolo");
     try{
-        nonDirectedList.addNode("Torino");
-        nonDirectedList.addNode("Milano");
-        nonDirectedList.addNode("Genova");
-        nonDirectedList.addNode("Pinerolo");
         nonDirectedList.addArc("Torino","Milano",200);
         nonDirectedList.addArc("Torino","Genova",275);
         nonDirectedList.addArc("Torino","Pinerolo",50);
@@ -327,18 +306,13 @@ public class AdjacencyListTest {
   }
   
 
-  /*get all node
+  //get all node
   @Test 
   public void testGetNodeDirect(){
-    try{
-        adjacencyList.addNode("Torino");
-        adjacencyList.addNode("Milano");
-        adjacencyList.addNode("Genova");
-        adjacencyList.addNode("Pinerolo");
-    }
-    catch(AdjacencyListException error){
-        assertTrue(error.toString(),false);
-    }
+    adjacencyList.addNode("Torino");
+    adjacencyList.addNode("Milano");
+    adjacencyList.addNode("Genova");
+    adjacencyList.addNode("Pinerolo");
     ArrayList<String> allNodes = adjacencyList.getAllNodes();
     if(allNodes.indexOf("Torino")==-1 || allNodes.indexOf("Milano")==-1 || 
     allNodes.indexOf("Genova")==-1 || allNodes.indexOf("Pinerolo")==-1)
@@ -347,15 +321,10 @@ public class AdjacencyListTest {
   }
   @Test 
   public void testGetNodeUndirect(){
-    try{
-        nonDirectedList.addNode("Torino");
-        nonDirectedList.addNode("Milano");
-        nonDirectedList.addNode("Genova");
-        nonDirectedList.addNode("Pinerolo");
-    }
-    catch(AdjacencyListException error){
-        assertTrue(error.toString(),false);
-    }
+    nonDirectedList.addNode("Torino");
+    nonDirectedList.addNode("Milano");
+    nonDirectedList.addNode("Genova");
+    nonDirectedList.addNode("Pinerolo");
     ArrayList<String> allNodes = nonDirectedList.getAllNodes();
     if(allNodes.indexOf("Torino")==-1 || allNodes.indexOf("Milano")==-1 || 
     allNodes.indexOf("Genova")==-1 || allNodes.indexOf("Pinerolo")==-1)
@@ -364,14 +333,14 @@ public class AdjacencyListTest {
   }
 
 
-  /*get all arc
+  //get all arc
   @Test 
   public void testGetArcDirect(){
+    adjacencyList.addNode("Torino");
+    adjacencyList.addNode("Milano");
+    adjacencyList.addNode("Genova");
+    adjacencyList.addNode("Pinerolo");
     try{
-        adjacencyList.addNode("Torino");
-        adjacencyList.addNode("Milano");
-        adjacencyList.addNode("Genova");
-        adjacencyList.addNode("Pinerolo");
         adjacencyList.addArc("Torino","Milano",200);
         adjacencyList.addArc("Torino","Genova",275);
         adjacencyList.addArc("Pinerolo","Genova",150);
@@ -395,11 +364,11 @@ public class AdjacencyListTest {
   }
   @Test 
   public void testGetArcUndirect(){
+    nonDirectedList.addNode("Torino");
+    nonDirectedList.addNode("Milano");
+    nonDirectedList.addNode("Genova");
+    nonDirectedList.addNode("Pinerolo");
     try{
-        nonDirectedList.addNode("Torino");
-        nonDirectedList.addNode("Milano");
-        nonDirectedList.addNode("Genova");
-        nonDirectedList.addNode("Pinerolo");
         nonDirectedList.addArc("Torino","Milano",200);
         nonDirectedList.addArc("Torino","Genova",275);
         nonDirectedList.addArc("Pinerolo","Genova",150);
@@ -425,14 +394,14 @@ public class AdjacencyListTest {
 
 
 
-  /*get Adjacent Node
+  //get Adjacent Node
   @Test 
   public void testGetAdjacentNodeDirect(){
+    adjacencyList.addNode("Torino");
+    adjacencyList.addNode("Milano");
+    adjacencyList.addNode("Genova");
+    adjacencyList.addNode("Pinerolo");
     try{
-        adjacencyList.addNode("Torino");
-        adjacencyList.addNode("Milano");
-        adjacencyList.addNode("Genova");
-        adjacencyList.addNode("Pinerolo");
         adjacencyList.addArc("Torino","Milano",200);
         adjacencyList.addArc("Torino","Genova",275);
         adjacencyList.addArc("Pinerolo","Genova",150);
@@ -450,11 +419,11 @@ public class AdjacencyListTest {
   } 
   @Test 
   public void testGetAdjacentNodeUndirect(){
+    nonDirectedList.addNode("Torino");
+    nonDirectedList.addNode("Milano");
+    nonDirectedList.addNode("Genova");
+    nonDirectedList.addNode("Pinerolo");
     try{
-        nonDirectedList.addNode("Torino");
-        nonDirectedList.addNode("Milano");
-        nonDirectedList.addNode("Genova");
-        nonDirectedList.addNode("Pinerolo");
         nonDirectedList.addArc("Torino","Milano",200);
         nonDirectedList.addArc("Torino","Genova",275);
         nonDirectedList.addArc("Pinerolo","Genova",150);
@@ -471,14 +440,14 @@ public class AdjacencyListTest {
     }   
   }
 
-/*get WeightArc
+//get WeightArc
 @Test 
 public void testgetWeightArcDirect(){
+  adjacencyList.addNode("Torino");
+  adjacencyList.addNode("Milano");
+  adjacencyList.addNode("Pinerolo");
+  adjacencyList.addNode("Genova");
   try{
-      adjacencyList.addNode("Torino");
-      adjacencyList.addNode("Milano");
-      adjacencyList.addNode("Pinerolo");
-      adjacencyList.addNode("Genova");
       adjacencyList.addArc("Torino","Milano",200);
       adjacencyList.addArc("Torino","Genova",275);
       adjacencyList.addArc("Pinerolo","Genova",150);
@@ -495,11 +464,11 @@ public void testgetWeightArcDirect(){
 } 
 @Test 
 public void testgetWeightArcUndirect(){
+  nonDirectedList.addNode("Torino");
+  nonDirectedList.addNode("Milano");
+  nonDirectedList.addNode("Pinerolo");
+  nonDirectedList.addNode("Genova");
   try{
-    nonDirectedList.addNode("Torino");
-    nonDirectedList.addNode("Milano");
-    nonDirectedList.addNode("Pinerolo");
-    nonDirectedList.addNode("Genova");
     nonDirectedList.addArc("Torino","Milano",200);
     nonDirectedList.addArc("Torino","Genova",275);
     nonDirectedList.addArc("Pinerolo","Genova",150);
@@ -513,7 +482,29 @@ public void testgetWeightArcUndirect(){
   assertTrue("wrong weight",nonDirectedList.getWeightArc("Pinerolo","Genova")==150);
   assertTrue("it can't find weight of inversed arc",nonDirectedList.getWeightArc("Genova","Pinerolo")==150);
   assertTrue("it finds the weight even if the weight does not exist",nonDirectedList.getWeightArc("Milano","Pinerolo")==null);
-} */
+} 
+@Test 
+public void testgetWeightArcGeneric(){
+  genericAdjacencyList.addNode(1); 
+  genericAdjacencyList.addNode(2);
+  genericAdjacencyList.addNode(3);
+  genericAdjacencyList.addNode(4);
+  try{
+    genericAdjacencyList.addArc(1,2,"pera");
+    genericAdjacencyList.addArc(1,4,"mela");
+    genericAdjacencyList.addArc(3,4,"albicocca");
+  }
+  catch(AdjacencyListException error){
+      assertTrue(error.toString(),false);
+  }
+  assertTrue("wrong weight",genericAdjacencyList.getWeightArc(1,2)=="pera");
+  assertTrue("it find weight of inversed arc",genericAdjacencyList.getWeightArc(2,1)==null);
+  assertTrue("wrong weight",genericAdjacencyList.getWeightArc(1,4)=="mela");
+  assertTrue("wrong weight",genericAdjacencyList.getWeightArc(3,4)=="albicocca");
+  assertTrue("it find weight of inversed arc",genericAdjacencyList.getWeightArc(4,3)==null);
+  assertTrue("it find weight but weight not exist",genericAdjacencyList.getWeightArc(2,3)==null);
+} 
+
 
 @Test 
 public void testKruskalNull(){
