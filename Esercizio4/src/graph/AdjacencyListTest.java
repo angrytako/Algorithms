@@ -518,7 +518,7 @@ public void testgetWeightArcUndirect(){
 @Test 
 public void testKruskalNull(){
   try{
-      kruskalInteger=new Kruskal(null);
+      kruskalInteger=new Kruskal<>(null);
       assertTrue(null,false);
   }
   catch(AdjacencyListException error){
@@ -528,7 +528,7 @@ public void testKruskalNull(){
   @Test 
   public void testKruskalEmptyGraph(){
     try{
-        kruskalInteger=new Kruskal(nonDirectedIntegerList);
+        kruskalInteger=new Kruskal<>(nonDirectedIntegerList);
         assertTrue(null,true);
     }
     catch(AdjacencyListException error){
@@ -538,7 +538,7 @@ public void testKruskalNull(){
     @Test 
     public void testKruskalEmptyGraphMinForest(){
       try{
-          kruskalInteger=new Kruskal(nonDirectedIntegerList);
+          kruskalInteger=new Kruskal<>(nonDirectedIntegerList);
          
           assertTrue("The size of the minForest of empty graph is: " 
           +kruskalInteger.minSpanForest().getAllArcs().size(),
