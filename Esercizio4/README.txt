@@ -22,9 +22,9 @@ COMPILAIZONE, CANCELLAZIONE Richiedono l'istallazione di ANT (library and comman
 1) posizionarsi in .../Esercizio4
 2) ANT junit (nella directory corrente ci deve essere il file build.xml)
 
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-***CANCELLAZIONE***
-COMPILAIZONE, CANCELLAZIONE Richiedono l'istallazione di ANT (library and command-line tool) -> https://ant.apache.org/ 
+QUESTE COMPILAIZONE, CANCELLAZIONE Richiedono l'istallazione di ANT (library and command-line tool) -> https://ant.apache.org/ 
 
 ***COMPILAZIONE***
 ---Tutto---

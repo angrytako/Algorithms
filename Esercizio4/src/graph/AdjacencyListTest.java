@@ -510,21 +510,23 @@ public void testgetWeightArcGeneric(){
 public void testKruskalNull(){
   try{
       kruskalInteger=new Kruskal<>(null);
-      assertTrue(null,false);
+      assertTrue("Kruskal is null",false);
   }
   catch(AdjacencyListException error){
-      assertTrue(error.toString(),true);
-  }} 
+      assertTrue(true);
+  }
+} 
 
   @Test 
   public void testKruskalEmptyGraph(){
     try{
         kruskalInteger=new Kruskal<>(nonDirectedIntegerList);
-        assertTrue(null,true);
+        assertTrue(true);
     }
     catch(AdjacencyListException error){
         assertTrue(error.toString(),false);
-    }} 
+    }
+  } 
   
     @Test 
     public void testKruskalEmptyGraphMinForest(){
@@ -537,5 +539,54 @@ public void testKruskalNull(){
       }
       catch(Exception error){
           assertTrue(error.toString(),false);
-      }}
+      }
+    }
+
+
+    @Test 
+    public void testKruskal(){
+      nonDirectedList.addNode("Torino");
+      nonDirectedList.addNode("Milano");
+      nonDirectedList.addNode("Pinerolo");
+      nonDirectedList.addNode("Genova");
+      try{
+        nonDirectedList.addArc("Torino","Milano",200);
+        nonDirectedList.addArc("Pinerolo","Genova",50);
+        nonDirectedList.addArc("Torino","Pinerolo",320);
+        nonDirectedList.addArc("Genova","Torino",275);
+        nonDirectedList.addArc("Milano","Genova",150);
+      }
+      catch(AdjacencyListException error){
+          assertTrue(error.toString(),false);
+      }
+    try{
+      Kruskal<String,Integer> kruskal=new Kruskal(nonDirectedList);
+      nonDirectedList=kruskal.minSpanForest();
+    }catch(Exception error){
+      assertTrue(error.toString(),false);
+    }
+      ArrayList<FullArc<String,Integer>> arcs = nonDirectedList.getAllArcs();
+      for (FullArc<String,Integer> arc : arcs) {
+        if(arc.getWeight()==150) {
+          assertTrue("wrong 1 arc "+arc.getFirstNode()+arc.getSecondNode(), 
+          arc.getFirstNode()  =="Milano" ||  arc.getFirstNode() == "Genova" );
+          assertTrue("wrong 1 arc "+arc.getFirstNode()+arc.getSecondNode(), 
+          arc.getSecondNode()  =="Milano" ||  arc.getSecondNode() == "Genova" );
+        }
+        if(arc.getWeight()==200) {
+          assertTrue("wrong 2 arc "+arc.getFirstNode()+arc.getSecondNode(), 
+          arc.getFirstNode()  =="Milano" ||  arc.getFirstNode() == "Torino" );
+          assertTrue("wrong 2 arc "+arc.getFirstNode()+arc.getSecondNode(), 
+          arc.getSecondNode()  =="Milano" ||arc.getSecondNode() == "Torino");
+        } 
+        if(arc.getWeight()==50) {
+          assertTrue("wrong 3 arc "+arc.getFirstNode()+arc.getSecondNode(), 
+          arc.getFirstNode()  =="Pinerolo" ||  arc.getFirstNode() == "Genova" );
+          assertTrue("wrong 3 arc "+arc.getFirstNode()+arc.getSecondNode(), 
+          arc.getSecondNode()  =="Pinerolo" ||  arc.getSecondNode() == "Genova" );
+        }
+    }
+    }
+
+
 }
