@@ -60,7 +60,7 @@ public class Kruskal<T,S extends Comparable<S>>{
 
              if(node1.equals(node2)==false){
                  sets.union(node1, node2);
-                 this.minForest.addArc(node1, node2, arc.getWeight());
+                 this.minForest.addArc(arc.getFirstNode(), arc.getSecondNode(), arc.getWeight());
              }}
         return this.minForest;
     }
