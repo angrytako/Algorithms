@@ -566,6 +566,7 @@ public void testKruskalNull(){
       assertTrue(error.toString(),false);
     }
       ArrayList<FullArc<String,Integer>> arcs = nonDirectedList.getAllArcs();
+      assertTrue("wrong num arc",arcs.size()==3);
       for (FullArc<String,Integer> arc : arcs) {
         if(arc.getWeight()==150) {
           assertTrue("wrong 1 arc "+arc.getFirstNode()+arc.getSecondNode(), 

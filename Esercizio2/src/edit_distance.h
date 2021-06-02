@@ -13,8 +13,6 @@
 
 
 
-
-
 //versione ricorsiva base 
 int ric_edit_distance( char* s1, char* s2 );
 

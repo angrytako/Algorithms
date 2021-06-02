@@ -1,6 +1,5 @@
 #include "edit_distance.h"
 
-
 int classic_edit_distance(char* str1, char* str2);
 int edit( char* str1, char* str2,int** mem,int min,int this, int lenght_str1,int lenght_str2);
 
@@ -52,22 +51,26 @@ int dinamic_edit( char* str1, char* str2,int min){
 }
 
 int edit( char* str1, char* str2,int** mem,int min,int this, int lenght_str1,int lenght_str2){
-        if (this>=min) return 100;
+        if (this>=min) return ERROR_DISTACE; //per evitare le chiamate che non influenzeranno il risultato
         int dnoop=0, dcanc=0,dins=0;
        
         if (lenght_str1==0) return lenght_str2;
         if (lenght_str2==0) return lenght_str1;
         
-        /*uso donoop come variabile di appoggio*/  
+        //ceck mem
         if (mem[lenght_str1-1][lenght_str2-1]>=0) return mem[lenght_str1-1][lenght_str2-1];
 
         //caso in cui tolgo un elemento da entrambe 
         if (*str1==*str2) dnoop= edit(REST(str1),REST(str2),mem,min,this,(lenght_str1-1),(lenght_str2-1));
         else dnoop = ERROR_DISTACE; 
         //secondo caso
-        dcanc = 1 + edit(str1,REST(str2),mem,min,this+1,lenght_str1,(lenght_str2-1));
-        dins = 1 + edit(REST(str1),str2,mem,min,this+1,(lenght_str1-1),lenght_str2);
-        /*minimo*/
+        dcanc = edit(str1,REST(str2),mem,min,this+1,lenght_str1,(lenght_str2-1));
+        dins = edit(REST(str1),str2,mem,min,this+1,(lenght_str1-1),lenght_str2);
+        // per evitare l'overfow
+        if (dcanc != ERROR_DISTACE) dcanc++;
+        if (dins != ERROR_DISTACE) dins++;
+
+        /*minimo, uso dnoop come variabile di appoggio*/
         if (dcanc<dnoop) dnoop = dcanc;
         if (dins<dnoop) dnoop = dins;
 

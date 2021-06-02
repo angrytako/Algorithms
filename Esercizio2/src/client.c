@@ -81,7 +81,8 @@ int main (int argn, char **args){
         if (firsCapital==1)  *dictionary[pos_min]= (char)((int)*dictionary[pos_min]-32);
     
         printf(" %s->%i\n" ,dictionary[pos_min],min);
-        fprintf(result,"%s%s",dictionary[pos_min],correctMe[i].extra);      
+        fprintf(result,"%s%s",dictionary[pos_min],correctMe[i].extra); 
+             
         if (firsCapital==1){
             *dictionary[pos_min]= (char)((int)*dictionary[pos_min]+32);
             firsCapital=0;
