@@ -53,7 +53,7 @@ WordAndExtras* parse_inspected_file (FILE* st, int* nrElems){
     int i=0;
     int maxNumElem=1024;    
     WordAndExtras structBuffer;
-    WordAndExtras  *toBeInspected;
+    WordAndExtras *toBeInspected;
 
     if((structBuffer.word=malloc(WORD_SIZE))==NULL){
         fprintf(stderr,"Error in allocating memory for the buffer\n");
@@ -94,6 +94,8 @@ WordAndExtras* parse_inspected_file (FILE* st, int* nrElems){
             i++;
     }
     *nrElems=i;
+    free(structBuffer.word);
+    free(structBuffer.extra);
     return toBeInspected;
 }
 
@@ -148,11 +150,11 @@ int get_word_and_extras(FILE *st, WordAndExtras* structBuffer){
 
 
 
-void free_memory_parser(char** dictionary, int numWord, WordAndExtras* correctMe,int inputWord){  
+void free_memory_parser(char** dictionary, int numWord, WordAndExtras* correctMe,int numElemCorrectMe){  
     for(int j=0;j<numWord;j++){ 
         free(dictionary[j]);
     }
-    for(int i=0;i<inputWord;i++){
+    for(int i=0;i<numElemCorrectMe;i++){
         free(correctMe[i].extra);
         free(correctMe[i].word);
     }

@@ -69,7 +69,7 @@
         <jar destfile="build/GraphTests.jar" basedir="classes">
           <zipgroupfileset dir="lib" includes="*.jar" excludes=""/>
           <manifest>
-            <attribute name="Main-Class" value="graph/AdjacencyListTestRunner"/>
+            <attribute name="Main-Class" value="graph/GraphUnitTestsRunner"/>
             <attribute name="Class-Path" value="${classpath}"/>
           </manifest>
         </jar>

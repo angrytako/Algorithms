@@ -47,15 +47,15 @@ int main (int argn, char **args){
     
         printf("Sorting with %d records!\n", nrRecords);
         sort(records,compare_functions[mode-1],sizeof(*records),nrRecords);
-       
+        printf("Sort completed!\n");
         if(validate(records,compare_functions[mode-1],sizeof(*records),nrRecords))
             printf("Valid sort!!\n");
         else {
-             printf("Invalid sort!!\n");
-             print_all_records(after,records,nrRecords);
-             return -1;
+            printf("Invalid sort!!\n");
+            print_all_records(after,records,nrRecords);
+            return -1;
         }
-        printf("Sort completed!\n Writing to file...\n ");
+        printf("Writing to file...\nResult in /bin/result.csv\n ");
 
     print_all_records(after,records,nrRecords);
     free(records);

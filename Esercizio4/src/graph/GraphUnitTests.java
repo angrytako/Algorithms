@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Laurentiu, Enrico
  */
-public class AdjacencyListTest {
+public class GraphUnitTests {
   private AdjacencyList<String,Integer> adjacencyList;
   private AdjacencyList<String,Integer> nonDirectedList;
   private AdjacencyList<Integer,String> genericAdjacencyList;  
@@ -560,7 +560,7 @@ public void testKruskalNull(){
           assertTrue(error.toString(),false);
       }
     try{
-      Kruskal<String,Integer> kruskal=new Kruskal(nonDirectedList);
+      Kruskal<String,Integer> kruskal=new Kruskal<>(nonDirectedList);
       nonDirectedList=kruskal.minSpanForest();
     }catch(Exception error){
       assertTrue(error.toString(),false);

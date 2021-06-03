@@ -66,7 +66,7 @@ int main (int argn, char **args){
         for(int j=0;(j<numWord && min!=0);j++){ 
             
             //distance=ric_edit_distance(correctMe[i].word,dictionary[j]);    
-            distance=dinamic_edit(correctMe[i].word,dictionary[j],min);    
+            distance=dinamic_edit_distance(correctMe[i].word,dictionary[j],min);    
             //controllo se è la parola più vicina
             if (distance<min){
                 min=distance;

@@ -18,17 +18,17 @@ void test_edit_distance_string_2_null(){
 }
 void test_edit_distance_mem_string_1_null(){
     char s1[]="aaaaaa";
-    TEST_ASSERT(dinamic_edit(s1,NULL,ERROR_DISTACE) == ERROR_DISTACE);
+    TEST_ASSERT(dinamic_edit_distance(s1,NULL,ERROR_DISTACE) == ERROR_DISTACE);
 }
 void test_edit_distance_mem_string_2_null(){
     char s2[]="aaaaaa";
-    TEST_ASSERT(dinamic_edit(NULL,s2,ERROR_DISTACE)== ERROR_DISTACE);
+    TEST_ASSERT(dinamic_edit_distance(NULL,s2,ERROR_DISTACE)== ERROR_DISTACE);
 }
 void test_edit_distance_null(){
     TEST_ASSERT(ric_edit_distance(NULL,NULL)== ERROR_DISTACE);
 }
 void test_edit_distance_mem_null(){
-    TEST_ASSERT(dinamic_edit(NULL,NULL,ERROR_DISTACE)== ERROR_DISTACE);
+    TEST_ASSERT(dinamic_edit_distance(NULL,NULL,ERROR_DISTACE)== ERROR_DISTACE);
 }
 void test_edit_distance_string_1_empty(){
     char s1[]="";
@@ -43,12 +43,12 @@ void test_edit_distance_string_2_empty(){
 void test_edit_distance_mem_string_1_empty(){
     char s1[]="";
     char s2[]="aa";
-    TEST_ASSERT(dinamic_edit(s1,s2,ERROR_DISTACE) == (int)strlen(s2));
+    TEST_ASSERT(dinamic_edit_distance(s1,s2,ERROR_DISTACE) == (int)strlen(s2));
 }
 void test_edit_distance_mem_string_2_empty(){
     char s2[]="";
     char s1[]="aa";
-    TEST_ASSERT(dinamic_edit(s1,s2,ERROR_DISTACE) == (int)strlen(s1));
+    TEST_ASSERT(dinamic_edit_distance(s1,s2,ERROR_DISTACE) == (int)strlen(s1));
 }
 
 /*test sul calcolo corretto dell'edit tra due stringhe*/
@@ -61,7 +61,7 @@ void test_edit_distance_mem_string_different(){
    
     char s1[]="bbbbb"; 
     char s2[]="aaaa";
-    TEST_ASSERT(dinamic_edit(s1,s2,ERROR_DISTACE) == 9);
+    TEST_ASSERT(dinamic_edit_distance(s1,s2,ERROR_DISTACE) == 9);
  
 }
 void test_edit_distance_string_equal(){
@@ -72,7 +72,7 @@ void test_edit_distance_string_equal(){
 void test_edit_distance_mem_string_equal(){
     char s1[]="bbb"; 
     char s2[]="bbb";
-    TEST_ASSERT(dinamic_edit(s1,s2,ERROR_DISTACE) == 0);
+    TEST_ASSERT(dinamic_edit_distance(s1,s2,ERROR_DISTACE) == 0);
 }
 
 void test_edit_distance_string_add(){
@@ -83,7 +83,7 @@ void test_edit_distance_string_add(){
 void test_edit_distance_mem_string_add(){
     char s1[]="b"; 
     char s2[]="bbb";
-    TEST_ASSERT(dinamic_edit(s1,s2,ERROR_DISTACE) == 2);
+    TEST_ASSERT(dinamic_edit_distance(s1,s2,ERROR_DISTACE) == 2);
 }
 void test_edit_distance_string_remmove(){
     char s1[]="bbb"; 
@@ -93,18 +93,18 @@ void test_edit_distance_string_remmove(){
 void test_edit_distance_mem_string_remmove(){
     char s1[]="bbb"; 
     char s2[]="b";
-    TEST_ASSERT(dinamic_edit(s1,s2,ERROR_DISTACE) == 2);
+    TEST_ASSERT(dinamic_edit_distance(s1,s2,ERROR_DISTACE) == 2);
 }
 
 void test_edit_distance_mem_string_word(){
     char s1[]="casa"; 
     char s2[]="casino";
-    TEST_ASSERT(dinamic_edit(s1,s2,ERROR_DISTACE) == 4);
+    TEST_ASSERT(dinamic_edit_distance(s1,s2,ERROR_DISTACE) == 4);
 }
 void test_edit_distance_string_word(){
     char s1[]="casa"; 
     char s2[]="casino";
-    TEST_ASSERT(dinamic_edit(s1,s2,ERROR_DISTACE) == 4);
+    TEST_ASSERT(dinamic_edit_distance(s1,s2,ERROR_DISTACE) == 4);
 }
 
 

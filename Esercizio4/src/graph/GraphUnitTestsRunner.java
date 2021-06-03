@@ -7,13 +7,13 @@ import org.junit.runner.notification.Failure;
  *
  * @author Laurentiu, Enrico
  */
-public class AdjacencyListTestRunner {
+public class GraphUnitTestsRunner {
 
   /**
    * @param args the command line arguments
    */
   public static void main(String[] args) {
-    Result result = JUnitCore.runClasses(AdjacencyListTest.class);
+    Result result = JUnitCore.runClasses(GraphUnitTests.class);
     for (Failure failure : result.getFailures()) {
       System.out.println(failure.toString());
     }

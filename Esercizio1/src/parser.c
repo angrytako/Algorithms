@@ -19,7 +19,6 @@ Record* parse_csv(FILE* st, int* nrElems){
     {
     
         if(i>=maxNumElem){
-          //  printf("realloc %lld\n",maxNumElem);
             maxNumElem*=2;
             if((records=realloc(records,(size_t)maxNumElem*sizeof(*records)))==NULL){
                 fprintf(stderr,"Error in allocating memory for the records array\n");
@@ -45,7 +44,7 @@ Record* parse_csv(FILE* st, int* nrElems){
             break;
        }
        else{
-           records[i].field3=(float) atof(buffer);
+            records[i].field3=(float) atof(buffer);
             memset(buffer, 0,RECORD_STR_SIZE);
             i++;
        }

@@ -19,7 +19,7 @@ int ric_edit_distance( char* s1, char* s2 );
 
 /*calcola la distanza tra due stringhe s1,s2 
 Se è inferiore al minimo già calcolato in precedenza per la stringa s1*/
-int dinamic_edit( char* s1, char* s2,int min);
+int dinamic_edit_distance( char* s1, char* s2,int min);
 
 
 
