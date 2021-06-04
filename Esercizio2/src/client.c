@@ -9,16 +9,21 @@ int main (int argn, char **args){
     FILE* inputFile, *result , *fdictionary;
     WordAndExtras *correctMe;
     char input_path[30];
+    char dictionary_path[30];
     char **dictionary;
     int inputWord,numWord,pos_min;
     int distance=0,min,firsCapital=0;
 
+
     if (argn<=1){
-        printf("Warning, you have not provided an input file as argument\nDefault path assumed to be ../correctme.txt\n");
+        printf("Warning, you have not provided an input file as argument\nDefault path assumed to be ../correctme.txt and ../dictionary.txt\n");
         sprintf(input_path,"../correctme.txt");
+        sprintf(dictionary_path,"../dictionary.txt");
     }
     else{
         sprintf(input_path,"%s",args[1]);
+        if(argn>=3) sprintf(dictionary_path,"%s",args[2]);        
+        else sprintf(dictionary_path,"../dictionary.txt");
     }
 
 
@@ -30,8 +35,8 @@ int main (int argn, char **args){
         fprintf(stderr,"Unable to open output file!\n");
         return -1;
     }
-    if((fdictionary=fopen("../dictionary.txt","r"))==NULL){
-        fprintf(stderr,"Unable to open dictionaty file!\n");
+    if((fdictionary=fopen(dictionary_path,"r"))==NULL){
+        fprintf(stderr,"Unable to open dictionaty file, path:%s\n",dictionary_path);
         return -1;
     }
 

@@ -21,7 +21,7 @@ public class MinTree {
             Kruskal<String,Double> kruskal;
             graph=csv.parse();
             csv.close();
-            kruskal=new Kruskal(graph);
+            kruskal=new Kruskal<>(graph);
             minForest=kruskal.minSpanForest();
             arcs=minForest.getAllArcs();
         
