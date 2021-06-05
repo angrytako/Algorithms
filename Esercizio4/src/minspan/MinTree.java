@@ -29,7 +29,10 @@ public class MinTree {
             write.write(arc.getFirstNode()+","+  arc.getSecondNode()+ ","+ arc.getWeight()+ '\n');
         }
         double totDistance=0;
-        for (FullArc<String,Double> arc : arcs) totDistance+=arc.getWeight();
+        for (FullArc<String,Double> arc : arcs) 
+            totDistance+=arc.getWeight();
+        write.write("Number of nodes: " +minForest.numberNodes()+ " m"+'\n');
+        write.write("Number of arcs: " +minForest.numberArcs()+ " m"+'\n');
         write.write("total distance: "+String.format("%.3f",totDistance) + " m"+'\n');
         write.flush();
         write.close();

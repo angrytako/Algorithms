@@ -16,10 +16,10 @@ COMPILAZIONE, CANCELLAZIONE Richiedono l'istallazione di ANT (library and comman
 
 
 ***ESECUZIONE***
----PER ESEGUIRE MinSpan---
+---PER ESEGUIRE MinSpan (KRUSKAL)---
 1) Compilare MinSpan (vedi paragrafo complilazione)
 2) posizionarsi in .../Esercizio4/build
-3) java -jar MinSpan.jar "path file"
+3) java -jar MinSpan.jar "path file" ("path file" path del file su cui eseuguire l algoritmo di kruskal)
 
 ---PER ESEGUIRE Unit test---
 1) Compilare junit (vedi paragrafo complilazione)

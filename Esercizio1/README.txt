@@ -18,12 +18,12 @@
 --PER ESEGUIRE l'algoritmo di sorting su un csv---
 1) Compilare --> per compilare solo il client utilizzare make client
 2) posizionarsi in .../Esercizio1/bin
-3) ./client.exe  "path_name" 
+3) ./client  "path_name" 
 Se si lascia vuoto path_name, verrà assunto che il file su cui si voglia fare sorting sia ../records.csv
 
 ---PER ESEGUIRE sort_unit_test---
 1) Compilare -> make test per compilare solo gli unit test
 2) posizionarsi in .../Esercizio1/bin
-3) ./sort_unit_test.exe
+3) ./sort_unit_test
 
 

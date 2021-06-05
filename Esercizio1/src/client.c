@@ -44,7 +44,7 @@ int main (int argn, char **args){
     }
     printf("Loading file in memory...\n");
     records=parse_csv(st, &nrRecords);
-    
+    fclose(st);
         printf("Sorting with %d records!\n", nrRecords);
         sort(records,compare_functions[mode-1],sizeof(*records),nrRecords);
         printf("Sort completed!\n");
@@ -59,6 +59,7 @@ int main (int argn, char **args){
         printf("Writing to file...\nResult in /bin/result.csv\n ");
 
     print_all_records(after,records,nrRecords);
+    fclose(after);
     free(records);
 
 }

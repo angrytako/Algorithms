@@ -42,7 +42,8 @@ int main (int argn, char **args){
 
     correctMe=parse_inspected_file(inputFile,&inputWord);
     dictionary=parse_dictionary(fdictionary,&numWord);
-  
+    fclose(inputFile);
+    fclose(fdictionary);
     
    
 
@@ -94,7 +95,8 @@ int main (int argn, char **args){
         }
 
     }
-
+    fflush(result);
+    fclose(result);
     free_memory_parser(dictionary,numWord,correctMe,inputWord);
     printf("Result in /bin/result.txt");
 

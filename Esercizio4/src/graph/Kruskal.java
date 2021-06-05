@@ -52,15 +52,20 @@ public class Kruskal<T,S extends Comparable<S>>{
              //System.out.println(city);
      }
         arcs=graph.getAllArcs();
+        int numNodes=minForest.numberNodes();
+        int edges=0;
         Collections.sort(arcs, new MyComparator<T,S>());
         for (FullArc<T,S> arc : arcs) {
-             T node1, node2;
-             node1=sets.find(arc.getFirstNode());
-             node2=sets.find(arc.getSecondNode());
+            if(edges==numNodes-1)
+                return this.minForest;
+            T node1, node2;
+            node1=sets.find(arc.getFirstNode());
+            node2=sets.find(arc.getSecondNode());
 
              if(node1.equals(node2)==false){
                  sets.union(node1, node2);
                  this.minForest.addArc(arc.getFirstNode(), arc.getSecondNode(), arc.getWeight());
+                 edges++;
              }}
         return this.minForest;
     }

@@ -20,14 +20,14 @@
 --PER ESEGUIRE edit_distance---
 1) Compilare --> per compilare solo il client utilizzare make client
 2) posizionarsi in .../Esercizio2/bin
-3) ./client.exe (path1) (path2) 
+3) ./client (path1) (path2) 
 path1 = file txt da correggere -> .../Esercizio2/correctme.txt di default
 path2 = file txt del dizzionario -> .../Esercizio2/dictionary.txt di default
 
 ---PER ESEGUIRE edit_distance_unit_test---
 1) Compilare -> make test per compilare solo gli unit test
 2) posizionarsi in .../Esercizio2/bin
-3) ./test.exe
+3) ./test
 
 
 
