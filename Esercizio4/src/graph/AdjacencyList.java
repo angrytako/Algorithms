@@ -102,15 +102,35 @@ public class AdjacencyList<T,S extends Comparable<S>>{
     public void nodeDelete (T elem){
         if (nodeExists(elem)){
             Arc<T,S> arcNode = graph.get(elem); 
-                while (arcNode!=null){
-                    try {
-                        arcDelete(elem,arcNode.getElem());
-                    }catch(AdjacencyListException error){
-                        System.out.println("Error! This error can't exist");
-                    }
-                    arcNode=arcNode.getNext();
+            while (arcNode!=null){
+                try {
+                    arcDelete(elem,arcNode.getElem());
+                }catch(AdjacencyListException error){
+                    System.out.println("Error! This error can't exist1"+arcNode.getElem()+elem+this.directed);
                 }
+                arcNode=arcNode.getNext();
+            }
+
+            if (directed==true)
+            {
+                ArrayList<FullArc<T,S>> allArc = new ArrayList<FullArc<T,S>>(numberArcs());
+                for(Map.Entry<T,Arc<T,S>> pair : graph.entrySet()){
+                    T baseNode=pair.getKey();
+                    Arc<T,S> arc =pair.getValue();        
+                        while(arc!=null){
+                            if (arc.getElem().equals(elem)){
+                                try {
+                                    arcDelete(baseNode,elem,true);
+                                }catch(AdjacencyListException error){
+                                    System.out.println("Error! This error can't exist2");
+                                }
+                            } 
+                            arc=arc.getNext();
+                        }                 
+                } 
+            }
             graph.remove(elem);
+
         }
     }
 
@@ -123,8 +143,7 @@ public class AdjacencyList<T,S extends Comparable<S>>{
      * @throws AdjacencyListException if eather nodes u,v, or bouth, do not exist.
      */
     public void arcDelete (T u, T v) throws AdjacencyListException {
-        if(this.directed==false) arcDelete(u,v,false);
-        else arcDelete(u,v,true);
+        arcDelete(u,v,this.directed);
     }
 
     private void arcDelete (T u, T v, boolean hasSingleArc) throws AdjacencyListException {

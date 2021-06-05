@@ -39,6 +39,9 @@ public class   Arc<T,S extends Comparable<S>>{
     public T getElem() {
         return elem;
     }
+    public void setElem(T elem) {
+        this.elem = elem;
+    }
     public Arc<T,S> getNext() {
         return next;
     }

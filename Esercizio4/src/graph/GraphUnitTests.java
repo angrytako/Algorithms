@@ -136,14 +136,14 @@ public class GraphUnitTests {
     try{
       adjacencyList.addArc("Torino","Milano",200);
       adjacencyList.addArc("Torino","Genova",275);
-      adjacencyList.addArc("Torino","Pinerolo",50); 
+      adjacencyList.addArc("Pinerolo","Torino",50); 
     }
     catch(AdjacencyListException error){
         assertTrue(error.toString(),false);
     }
     adjacencyList.nodeDelete("Torino");
     assertFalse("The arc continues to exist",adjacencyList.ArcExists("Torino","Genova") );
-    assertFalse("Another arc not more exist",adjacencyList.ArcExists("Torino","Pinerolo") );
+    assertFalse("Another arc continues to exist",adjacencyList.ArcExists("Pinerolo","Torino") );
   } 
   @Test 
   public void testNodeDeleteUndirect2(){
@@ -154,14 +154,14 @@ public class GraphUnitTests {
     try{
         nonDirectedList.addArc("Torino","Milano",200);
         nonDirectedList.addArc("Torino","Genova",275);
-        nonDirectedList.addArc("Torino","Pinerolo",50); 
+        nonDirectedList.addArc("Pinerolo","Torino",50); 
     }
     catch(AdjacencyListException error){
         assertTrue(error.toString(),false);
     }
     nonDirectedList.nodeDelete("Torino");
     assertFalse("The arc continues to exist",nonDirectedList.ArcExists("Torino","Genova") );
-    assertFalse("Another arc not more exist",nonDirectedList.ArcExists("Torino","Pinerolo") );
+    assertFalse("Another arc continues to exist",nonDirectedList.ArcExists("Pinerolo","Torino") );
   }
 
 
