@@ -106,7 +106,7 @@ public class AdjacencyList<T,S extends Comparable<S>>{
                 try {
                     arcDelete(elem,arcNode.getElem());
                 }catch(AdjacencyListException error){
-                    System.out.println("Error! This error can't exist1"+arcNode.getElem()+elem+this.directed);
+                    System.out.println("Error! This error can't exist1");
                 }
                 arcNode=arcNode.getNext();
             }
