@@ -53,6 +53,7 @@ int main (int argn, char **args){
         else {
             printf("Invalid sort!!\n");
             print_all_records(after,records,nrRecords);
+            printf("Writing to file...\nResult in /bin/result.csv\n ");
             return -1;
         }
         printf("Writing to file...\nResult in /bin/result.csv\n ");

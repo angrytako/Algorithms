@@ -123,16 +123,16 @@ public class AdjacencyList<T,S extends Comparable<S>>{
      * @throws AdjacencyListException if eather nodes u,v, or bouth, do not exist.
      */
     public void arcDelete (T u, T v) throws AdjacencyListException {
-        if(directed==false) arcDelete(u,v,false);
+        if(this.directed==false) arcDelete(u,v,false);
         else arcDelete(u,v,true);
     }
 
-    private void arcDelete (T u, T v, boolean clearSecondArc) throws AdjacencyListException {
+    private void arcDelete (T u, T v, boolean hasSingleArc) throws AdjacencyListException {
         Arc<T,S> elem=graph.get(u); 
         if (elem==null) throw new AdjacencyListException("Arc does not  exisit");
         if (elem.getElem().equals(v)) {
             graph.replace(u, elem.getNext());
-            if(clearSecondArc==false) arcDelete(v,u,true);
+            if(hasSingleArc==false) arcDelete(v,u,true);
             else numberArcs--;
             return;
         }
@@ -140,7 +140,7 @@ public class AdjacencyList<T,S extends Comparable<S>>{
         while(elem.getNext()!=null){
             if (elem.getNext().getElem().equals(v)){
                 elem.setNext(elem.getNext().getNext());
-                if(clearSecondArc==false) arcDelete(v,u,true);
+                if(hasSingleArc==false) arcDelete(v,u,true);
                 else numberArcs--;
                 return;
             }
@@ -161,7 +161,7 @@ public class AdjacencyList<T,S extends Comparable<S>>{
      * @return Number of arcs in the graph.
      */
     public int numberArcs(){
-        return numberArcs;
+        return this.numberArcs;
     }
 
     /** 
