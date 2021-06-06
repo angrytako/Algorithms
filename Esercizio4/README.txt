@@ -1,3 +1,23 @@
+						(DA LINEA DI COMANDO)
+----PER COMPILARE---
+1) posizionarsi in .../Esercizio4
+2) creare una cartella "classes"
+2)javac -cp ".\lib\junit-4.12.jar;\lib\hamcrest-core-1.3.jar;.\lib\UnionFind.jar" -d .\classes .\src\graph\*.java 
+3)javac -cp ".\classes;.\lib\UnionFind.jar" -d .\classes .\src\minspan\*.java
+
+----PER ESEGUIRE MIN TREE----
+1) compilare 
+2) posizionarsi nella cartella classes
+3) java -cp ".\;..\lib\UnionFind.jar"   minspan/MinTree "file path" (path del csv su cui eseguire Kruskal; l'ouput si troverà nella cartella di esecuzione)
+
+----PER ESEGUIRE GLI UNIT TEST----
+1) compilare
+2) posizionarsi nella cartella classes
+3) java -cp ".\;..\lib\junit-4.12.jar;..\lib\hamcrest-core-1.3.jar;..\lib\UnionFind.jar"   graph/GraphUnitTestsRunner
+
+							
+						   (CON ANT)
+
 COMPILAZIONE, CANCELLAZIONE Richiedono l'istallazione di ANT (library and command-line tool) -> https://ant.apache.org/ 
 ***COMPILAZIONE***
 ---Tutto---
